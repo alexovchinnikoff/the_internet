@@ -1,31 +1,36 @@
+# pages/test_open_mainpage_2.py
+
 import pytest
 from playwright.sync_api import Page, expect
 import time
+from pages.main_page import MainPage
 
-# Открывает страницу и ждет 3 секунды
-def test_open_main_page(page: Page):
-    page.goto("https://the-internet.herokuapp.com/") # Открываем стартовую страницу
-    page.wait_for_timeout(3000)  # 3000 миллисекунд = 3 секунды
-    expect(page).to_have_title("The Internet")# Ждем появления надписи
-    expect(page).to_have_url("https://the-internet.herokuapp.com/")  # Проверяем урл
-    welcome_header = page.locator("xpath=//h1[contains(text(), 'Welcome to the-internet')]")
-    second_header = page.locator("xpath=//h2[contains(text(), 'Available Examples')]")
-    hrefs = page.locator("xpath=//div[@id='content']/ul/li")
-    expect(welcome_header).to_be_visible()# Ждем появления первого заголовка
-    expect(second_header).to_be_visible()# Ждем появления второго заголовка
-    expect(hrefs).to_have_count(44)  # Ждем появления 44 элементов(ссылок для перехода в разделы)
-    hrefs_number = hrefs.count() # Кладем в переменную значение количества элементов(ссылок для перехода в разделы)
-    current_url = page.url  # Текущий URL
-    page_title = page.title()  # Заголовок страницы
-    # Выводим информацию для наглядности
-    print(f"\n✅ Стартовая страница The-Internet успешно загружена")
+def test_mainpage_open(page: Page):
+    # Инициализируем классы
+    main_page_object = MainPage(page)
+    # Действия и проверки
+    main_page_object.go_to()  # вызываем переход на страницу
+    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    main_page_object.url_check()  # вызываем проверку урла
+    main_page_object.headers_visible() # вызываем проверку видимости
+    main_page_object.links_visible() # вызываем проверку видимости
+    main_page_object.links_enabled()# вызываем проверку активности
+    main_page_object.links_count(44) # вызываем проверку количества
+    links_number = main_page_object.links.count() # передаем реальное количество для вывода
+
+    # page_title = page.title()
+    current_url = page.url
+    welcome_text = main_page_object.welcome_header.inner_text()
+    second_text = main_page_object.second_header.inner_text()
+
+    # Вывод результатов в консоль
+    print(f"\n✅ Стартовая страница успешно загружена")
     print(f"📍 Текущий URL: {current_url}")
-    print(f"📄 Заголовок: {page_title}")
-    print(f"📄 Виден приветственный заголовок: {welcome_header.inner_text()}")
-    print(f"📄 Виден второй заголовок: {second_header.inner_text()}")
-    print(f"📄 В списке найдено {hrefs_number} элементов.")
-    print("⏳ Ожидание 3 секунды...")
+    print(f"📄 Виден приветственный заголовок: {welcome_text}")
+    print(f"📄 Виден второй заголовок: {second_text}")
+    print(f"📄 В списке найдено {links_number} ссылок (пунктов меню).")
+    print("⏳ Ожидание 1,5 секунды...")
 
-    # Можно добавить скриншот для наглядности
-    page.screenshot(path="main_page_screenshot.png")
+    # Скриншот
+    page.screenshot(path="D:/Projects/the_internet/prtscr/main_page_screenshot.png")
     print("📸 Скриншот сохранен как 'main_page_screenshot.png'")

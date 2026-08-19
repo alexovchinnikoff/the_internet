@@ -1,3 +1,4 @@
+# tests/ui/conftest.py
 import pytest
 from playwright.sync_api import Browser, Page, BrowserContext, Playwright, sync_playwright
 from typing import Generator

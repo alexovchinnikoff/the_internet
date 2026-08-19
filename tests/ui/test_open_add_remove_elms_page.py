@@ -1,30 +1,43 @@
+# tests/ui/test_open_add_remove_elms_page.py
+
 import pytest
 from playwright.sync_api import Page, expect
 import time
+from pages.main_page import MainPage
+from pages.add_remove_elms_page import AddRemoveElmsPage
 
 # Открывает страницу и ждет 3 секунды
 def test_open_add_remove_elements_page(page: Page):
-    page.goto("https://the-internet.herokuapp.com/") # Открываем стартовую страницу
-    page.wait_for_timeout(3000)  # 3000 миллисекунд = 3 секунды
-    expect(page.locator("xpath=//a[contains(text(), 'Add/Remove Elements')]")).to_be_visible()  # Элемент виден
-    expect(page.locator("xpath=//a[contains(text(), 'Add/Remove Elements')]")).to_be_enabled()  # Элемент активен
-    expect(page.locator("xpath=//a[contains(text(), 'Add/Remove Elements')]")).to_have_text("Add/Remove Elements")# На элементе есть надпись
-    page.click("xpath=//a[contains(text(), 'Add/Remove Elements')]")  # Клик по элементу
+    # Инициализируем классы
+    main_page_object = MainPage(page)
+    add_remove_elms_page_object = AddRemoveElmsPage(page)
+    # Действия и проверки
+    main_page_object.go_to() # вызываем переход на страницу
+    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    main_page_object.links_visible()# вызываем проверку видимости
+    main_page_object.links_enabled()# вызываем проверку видимости
 
-    second_header = page.locator("xpath=//h3[contains(text(), 'Add/Remove Elements')]")
-    expect(page).to_have_url("https://the-internet.herokuapp.com/add_remove_elements/")
-    expect(second_header).to_be_visible()
-    expect(second_header).to_have_text("Add/Remove Elements")
+    main_page_object.click_addremoveelms()# вызываем клик по элементу
+    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    add_remove_elms_page_object.page_header_visible()# вызываем проверку видимости
+    add_remove_elms_page_object.add_button_visible()# вызываем проверку видимости
+    add_remove_elms_page_object.no_delete_buttons()
+    # add_remove_elms_page_object.click_add_element()
+
+    # page_title = page.title()
     current_url = page.url  # Текущий URL
-    page_title = page.title()  # Заголовок страницы
+    page_header = add_remove_elms_page_object.page_header.inner_text()
+    add_button_number = add_remove_elms_page_object.add_button.count()
+    delete_buttons_number = add_remove_elms_page_object.delete_buttons.count()
 
-    # Выводим информацию для наглядности
+    # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")
     print(f"📍 Текущий URL: {current_url}")
-    print(f"📄 Заголовок: {page_title}")
-    print(f"📄 Виден заголовок страницы: {second_header.inner_text()}")
-    print("⏳ Ожидание 3 секунды...")
+    print(f"📄 Виден заголовок страницы: {page_header}")
+    print(f"📄 Видна кнопка Add Button в количестве: {add_button_number}")
+    print(f"📄 Видна кнопка Delete в количестве: {delete_buttons_number}")
+    print("⏳ Ожидание 1,5 секунды...")
 
-    # Можно добавить скриншот для наглядности
-    page.screenshot(path="add_remove_elms_screenshot.png")
+    # Скриншот
+    page.screenshot(path="D:/Projects/the_internet/prtscr/add_remove_elms_screenshot.png")
     print("📸 Скриншот сохранен как 'add_remove_elms_screenshot.png'")

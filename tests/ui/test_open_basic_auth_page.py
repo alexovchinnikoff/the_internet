@@ -1,39 +1,39 @@
+# tests/ui/test_open_basic_auth_page.py
+
 import pytest
 from playwright.sync_api import Page, expect
 import time
+from pages.main_page import MainPage
+from pages.basic_auth_page import BasicAuthPage
 
-# Открывает страницу и ждет 3 секунд
-def test_open_basic_auth_page(page: Page):
-    page.goto("https://the-internet.herokuapp.com/") # Открываем страницу
-    page.wait_for_timeout(3000)  # 3000 миллисекунд = 3 секунды
-    basic_auth = page.locator("xpath=//a[contains(text(), 'Basic Auth')]")
-    expect(basic_auth).to_be_visible()  # Элемент виден
-    expect(basic_auth).to_be_enabled()  # Элемент активен
-    expect(basic_auth).to_have_text("Basic Auth")  # На элементе есть надпись
-    page.click("xpath=//a[contains(text(), 'Basic Auth')]")  # Клик по элементу
+def test_basic_auth_page_open(page: Page):
+    # Инициализируем классы
+    main_page_object = MainPage(page)
+    basic_auth_page_object = BasicAuthPage(page)
+    # Действия и проверки
+    main_page_object.go_to()  # вызываем переход на страницу
+    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    main_page_object.links_visible()# вызываем проверку видимости
+    main_page_object.links_enabled()# вызываем проверку активности
 
-    page.wait_for_timeout(3000)  # 3000 миллисекунд = 3 секунды
+    basic_auth_page_object.go_to()# Открывает страницу по ссылке
+    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    basic_auth_page_object = BasicAuthPage(page)# Инициализируем класс
+    basic_auth_page_object.header_and_text_visible()# вызываем проверку видимости
+    basic_auth_page_object.url_check()  # вызываем проверку урла
 
-    # ввести во всплывающем окне (user and pass: admin) и нажать "Войти"
-    expect(page).to_have_url("https://the-internet.herokuapp.com/basic_auth")
-    header = page.locator("xpath=//h3[contains(text(), 'Basic Auth')]")
-    expect(header).to_be_visible()
-    expect(header).to_have_text("Basic Auth")
-    text = page.locator("xpath=//p[contains(text(), 'Congratulations! You must have the proper credentials.')]")
-    expect(text).to_be_visible()
-    expect(text).to_have_text("Congratulations! You must have the proper credentials.")
-
+    # page_title = page.title()
     current_url = page.url  # Текущий URL
-    page_title = page.title()  # Заголовок страницы
+    header_text = basic_auth_page_object.page_header.inner_text()
+    text = basic_auth_page_object.page_text.inner_text()
 
-    # Выводим информацию для наглядности
+    # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")
     print(f"📍 Текущий URL: {current_url}")
-    print(f"📄 Заголовок: {page_title}")
-    print(f"📄 Виден заголовок страницы: {header.inner_text()}")
-    print(f"📄 Виден заголовок страницы: {text.inner_text()}")
+    print(f"📄 Виден заголовок страницы: {header_text}")
+    print(f"📄 Виден текст: {text}")
     print("⏳ Ожидание 3 секунд...")
 
-    # Можно добавить скриншот для наглядности
-    page.screenshot(path="abtest_screenshot.png")
-    print("📸 Скриншот сохранен как 'abtest_screenshot.png'")
+    # Скриншот
+    page.screenshot(path="D:/Projects/the_internet/prtscr/basic_auth_screenshot.png")
+    print("📸 Скриншот сохранен как 'basic_auth_screenshot.png'")
