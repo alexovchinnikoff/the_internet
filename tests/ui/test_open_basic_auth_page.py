@@ -1,8 +1,7 @@
 # tests/ui/test_open_basic_auth_page.py
 
-import pytest
+import pytest, time
 from playwright.sync_api import Page, expect
-import time
 from pages.main_page import MainPage
 from pages.basic_auth_page import BasicAuthPage
 

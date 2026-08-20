@@ -1,32 +1,35 @@
 # tests/ui/test_open_abtest_page.py
 
-import pytest
+import pytest, time
 from playwright.sync_api import Page, expect
-import time
-from pages.main_page import MainPage
-from pages.abtest_page import ABTestPage
+from pages.main_page_2 import MainPage, MainPageElms
+from pages.abtest_page import ABTestPage, ABTestPageElms
 
 # Открывает страницу
 def test_abtest_page_open(page: Page):
-    # Инициализируем классы
-    main_page_object = MainPage(page)
-    abtest_page_object = ABTestPage(page)
-    # Действия и проверки
-    main_page_object.go_to() # вызываем переход на страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    main_page_object.links_visible()# вызываем проверку видимости
-    main_page_object.links_enabled()# вызываем проверку активности
+    # объекты класса
+    elms = MainPageElms(page)
+    main_page = MainPage(page, elms)
 
-    main_page_object.click_abtest()# вызываем клик по элементу
+    # Действия
+    main_page.go_to() # открываем стартовую страницу
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    abtest_page_object.url_check()  # вызываем проверку урла
-    abtest_page_object.header_and_text_visible()# вызываем проверку видимости
+    main_page.click_abtest()# кликаем по ссылке
+    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+
+    # объекты класса
+    elms = ABTestPageElms(page)
+    abtest_page = ABTestPage(page, elms)
+
+    # Действия
+    abtest_page.url_check()  # вызываем проверку урла
+    abtest_page.header_and_text_visible()# вызываем проверку видимости
 
     # page_title = page.title()
     current_url = page.url  # Текущий URL
     page_title = page.title()  # Заголовок страницы
-    header_text = abtest_page_object.page_header.inner_text()
-    text = abtest_page_object.page_text.inner_text()
+    header_text = elms.page_header.inner_text()
+    text = elms.page_text.inner_text()
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

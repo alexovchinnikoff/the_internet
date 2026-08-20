@@ -1,8 +1,7 @@
 # tests/ui/test_open_challenging_dom_page.py
 
-import pytest
+import pytest, time
 from playwright.sync_api import Page, expect
-import time
 from pages.main_page import MainPage
 from pages.chal_dom_page import ChalDomPage
 

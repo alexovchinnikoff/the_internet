@@ -1,28 +1,28 @@
-# pages/test_open_mainpage_2.py
+# pages/test_open_mainpage.py
 
-import pytest
+import pytest, time
 from playwright.sync_api import Page, expect
-import time
-from pages.main_page import MainPage
+from pages.main_page import MainPage, MainPageElms
 
 def test_mainpage_open(page: Page):
-    # Инициализируем классы
-    main_page_object = MainPage(page)
+    # класс MainPage
+    elms = MainPageElms() # со скобками обращаемся к объекту, без скобок - просто к классу
+    main_page = MainPage(page,elms)
     # Действия и проверки
-    main_page_object.go_to()  # вызываем переход на страницу
+    main_page.go_to()  # переход на стартовую страницу
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    main_page_object.url_check()  # вызываем проверку урла
-    main_page_object.headers_visible() # вызываем проверку видимости
-    main_page_object.links_visible() # вызываем проверку видимости
-    main_page_object.links_enabled()# вызываем проверку активности
-    main_page_object.links_count(44) # вызываем проверку количества
-    links_number = main_page_object.links.count() # передаем реальное количество для вывода
+    main_page.url_check()  # проверяем урл
+    main_page.headers_visible() # проверяем заголовки
+    main_page.links_visible() # проверяем видимость ссылок
+    main_page.links_enabled()# проверяем активность ссылок
+    main_page.links_count(44) # проверяем количество ссылок
 
+    # Переменные для вывода результатов
     # page_title = page.title()
     current_url = page.url
-    welcome_text = main_page_object.welcome_header.inner_text()
-    second_text = main_page_object.second_header.inner_text()
-
+    welcome_text = main_page.elms.get_welcome_header(page).inner_text()
+    second_text = main_page.elms.get_second_header(page).inner_text()
+    links_number = main_page.elms.get_links(page).count()
     # Вывод результатов в консоль
     print(f"\n✅ Стартовая страница успешно загружена")
     print(f"📍 Текущий URL: {current_url}")
