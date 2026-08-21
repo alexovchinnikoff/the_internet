@@ -19,10 +19,14 @@ def test_basic_auth_page_open(page: Page):
 
     basic_auth_page.go_to()# Открывает страницу по ссылке
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-
+    '''
     basic_auth_page.header_and_text_visible()# вызываем проверку видимости
     basic_auth_page.url_check()  # вызываем проверку урла
+    '''
 
+    assert "/basic_auth" in page.url
+    assert elms.page_header.is_visible()
+    assert elms.page_text.is_visible()
     # page_title = page.title()
     current_url = page.url  # Текущий URL
     header_text = basic_auth_page.elms.page_header.inner_text()

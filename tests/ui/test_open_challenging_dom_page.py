@@ -19,9 +19,13 @@ def test_open_chal_dom_page(page: Page):
 
     elms = ChalDomPageElms(page)
     chal_dom_page = ChalDomPage(page, elms)
-
+    '''
     chal_dom_page.page_header_visible()# вызываем проверку видимости
     chal_dom_page.url_check()  # вызываем проверку урла
+    '''
+
+    assert "/challenging_dom" in page.url
+    assert elms.page_header.is_visible()
 
     # page_title = page.title()
     current_url = page.url  # Текущий URL

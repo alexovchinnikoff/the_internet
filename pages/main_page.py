@@ -40,6 +40,7 @@ class MainPage:
 
     # функции проверки (Методы-проверки - возвращают True/False или ничего, просто ждут)
     # Проверяем попадание на стартовую страницу
+    '''
     def url_check(self):
         expect(self.page).to_have_url("https://the-internet.herokuapp.com/")
 
@@ -61,3 +62,4 @@ class MainPage:
     # проверяем количество ссылок
     def links_count(self, expected_count: int): # проверяем количество ссылок
         expect(self.elms.links).to_have_count(expected_count)
+    '''

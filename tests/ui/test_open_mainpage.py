@@ -10,11 +10,25 @@ def test_main_page_open(page: Page):
     # Действия и проверки
     main_page.go_to()  # переход на стартовую страницу
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    '''
     main_page.url_check()  # проверяем урл
     main_page.headers_visible() # проверяем заголовки
     main_page.links_visible() # проверяем видимость ссылок
-    #main_page.links_enabled()# проверяем активность ссылок
+    #main_page.links_enabled()# НЕ проверяем активность ссылок
     main_page.links_count(44) # проверяем количество ссылок
+    '''
+    # урл проверяем ассертом можно так:
+    assert page.url == "https://the-internet.herokuapp.com/"
+
+    assert elms.welcome_header.is_visible()
+    assert elms.second_header.is_visible()
+    assert elms.link_abtest.is_visible()
+    assert elms.link_addremoveelms.is_visible()
+    assert elms.link_basicauth.is_visible()
+    assert elms.link_brokenimgs.is_visible()
+    assert elms.link_chaldom.is_visible()
+
+    assert main_page.elms.links.count() == 44
 
     # Переменные для вывода результатов
     # page_title = page.title()

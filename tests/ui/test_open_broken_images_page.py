@@ -22,12 +22,17 @@ def test_broken_imgs_page_open(page: Page):
 
     elms = BrokenImgsPageElms(page)
     broken_imgs_page = BrokenImgsPage(page, elms)
-
+    '''
     broken_imgs_page.page_header_visible()# вызываем проверку видимости
     # broken_imgs_page_object.page_images_visible() # картинки специально битые и тест упадет
     broken_imgs_page.images_count(3)# вызываем проверку количества
     broken_imgs_page.url_check()  # вызываем проверку урла
+    '''
 
+    assert "/broken_images" in page.url
+    assert elms.page_header.is_visible()
+    # assert elms.page_images.is_visible() # пока убрал чтоб тест не падал.но надо как-то проверить что они битые
+    assert elms.page_images.count() == 3
     # page_title = page.title()
     current_url = page.url  # Текущий URL
     page_header = broken_imgs_page.elms.page_header.inner_text()

@@ -29,10 +29,16 @@ def test_open_add_remove_elements_page(page: Page):
 
     add_remove_page.click_add_button()# вызываем клик по элементу
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-
+    '''
     add_remove_page.one_add_button()# вызываем проверку количества
     add_remove_page.one_delete_buttons()# вызываем проверку количества
-
+    '''
+    assert "/add_remove_elements" in page.url
+    assert elms.page_header.is_visible()
+    assert elms.add_button.is_visible()
+    assert elms.add_button.count() == 1
+    assert elms.delete_buttons.is_visible()
+    assert elms.delete_buttons.count() == 1
     # page_title = page.title()
     current_url = page.url  # Текущий URL
     page_header = add_remove_page.elms.page_header.inner_text()

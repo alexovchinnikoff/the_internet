@@ -20,11 +20,17 @@ def test_open_add_remove_page(page: Page):
 
     elms = AddRemovePageElms(page)
     add_remove_page = AddRemovePage(page, elms)
-
+    '''
     add_remove_page.page_header_visible()# вызываем проверку видимости
     add_remove_page.add_button_visible()# вызываем проверку видимости
     add_remove_page.no_delete_buttons()
     # add_remove_elms_page_object.click_add_element()
+    '''
+    assert "/add_remove_elements" in page.url # сделал не строгую проверку. в отличие от остальных страниц, здесь урл со слэшем в конце /add_remove_element/
+    assert elms.page_header.is_visible()
+    assert elms.add_button.is_visible()
+    assert elms.add_button.count() == 1
+    assert elms.delete_buttons.count() == 0
 
     # page_title = page.title()
     current_url = page.url  # Текущий URL
