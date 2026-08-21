@@ -2,30 +2,36 @@
 
 import pytest, time
 from playwright.sync_api import Page, expect
-from pages.main_page import MainPage
-from pages.broken_imgs_page import BrokenImgsPage
+from pages.main_page import MainPage, MainPageElms
+from pages.broken_imgs_page import BrokenImgsPage, BrokenImgsPageElms
 
 def test_broken_imgs_page_open(page: Page):
-    # Инициализируем классы
-    main_page_object = MainPage(page)
-    broken_imgs_page_object = BrokenImgsPage(page)
-    # Действия и проверки
-    main_page_object.go_to() # вызываем переход на страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    main_page_object.links_visible()# вызываем проверку видимости
-    main_page_object.links_enabled()# вызываем проверку видимости
+    # Инициализируем
+    elms = MainPageElms(page)
+    main_page = MainPage(page, elms)
 
-    main_page_object.click_brokenimgs()# вызываем клик по элементу
+    elms = BrokenImgsPageElms(page)
+    broken_imgs_page = BrokenImgsPage(page, elms)
+
+    # Действия и проверки
+    main_page.go_to() # вызываем переход на страницу
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    broken_imgs_page_object.page_header_visible()# вызываем проверку видимости
+
+    main_page.click_brokenimgs()# вызываем клик по элементу
+    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+
+    elms = BrokenImgsPageElms(page)
+    broken_imgs_page = BrokenImgsPage(page, elms)
+
+    broken_imgs_page.page_header_visible()# вызываем проверку видимости
     # broken_imgs_page_object.page_images_visible() # картинки специально битые и тест упадет
-    broken_imgs_page_object.images_count(3)# вызываем проверку количества
-    broken_imgs_page_object.url_check()  # вызываем проверку урла
+    broken_imgs_page.images_count(3)# вызываем проверку количества
+    broken_imgs_page.url_check()  # вызываем проверку урла
 
     # page_title = page.title()
     current_url = page.url  # Текущий URL
-    page_header = broken_imgs_page_object.page_header.inner_text()
-    images_number = broken_imgs_page_object.page_images.count()
+    page_header = broken_imgs_page.elms.page_header.inner_text()
+    images_number = broken_imgs_page.elms.page_images.count()
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")
@@ -35,5 +41,5 @@ def test_broken_imgs_page_open(page: Page):
     print("⏳ Ожидание 1,5 секунд...")
 
     # Скриншот
-    page.screenshot(path="D:/Projects/the_internet/prtscr/broken_imgs_screenshot.png")
-    print("📸 Скриншот сохранен как 'broken_imgs_screenshot.png'")
+    page.screenshot(path="D:/Projects/the_internet/prtscr/open_broken_images_page_screenshot.png")
+    print("📸 Скриншот сохранен как 'open_broken_images_page_screenshot.png'")

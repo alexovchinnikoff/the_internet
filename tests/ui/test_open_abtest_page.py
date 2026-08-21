@@ -2,7 +2,7 @@
 
 import pytest, time
 from playwright.sync_api import Page, expect
-from pages.main_page_2 import MainPage, MainPageElms
+from pages.main_page import MainPage, MainPageElms
 from pages.abtest_page import ABTestPage, ABTestPageElms
 
 # Открывает страницу
@@ -39,5 +39,5 @@ def test_abtest_page_open(page: Page):
     print("⏳ Ожидание 1,5 секунды...")
 
     # Скриншот
-    page.screenshot(path="D:/Projects/the_internet/prtscr/abtest_page_screenshot.png")
-    print("📸 Скриншот сохранен как 'abtest_page_screenshot.png'")
+    page.screenshot(path="D:/Projects/the_internet/prtscr/open_abtest_page_screenshot.png")
+    print("📸 Скриншот сохранен как 'open_abtest_page_screenshot.png'")
