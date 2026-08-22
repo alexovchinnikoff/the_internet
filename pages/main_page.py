@@ -6,15 +6,24 @@ from playwright.sync_api import Page, expect
 # создаем класс(шаблон страницы), в который пишем локаторы элементов страницы
 class MainPageElms:
     def __init__(self, page: Page):
-        self.welcome_header = page.locator("h1", has_text="Welcome to the-internet")
-        self.second_header = page.locator("h2", has_text="Available Examples")
-        self.links = page.locator("div#content ul li a")
-        self.link_abtest = page.locator("a", has_text="A/B Testing")
-        self.link_addremoveelms = page.locator("a", has_text="Add/Remove Elements")
-        self.link_basicauth = page.locator("a", has_text="Basic Auth")
-        self.link_brokenimgs = page.locator("a", has_text="Broken Images")
-        self.link_chaldom = page.locator("a", has_text="Challenging DOM")
-
+        self.welcome_header = page.locator("xpath=.//h1[contains(text(), 'Welcome to the-internet')]")
+        # self.welcome_header = page.locator("h1", has_text="Welcome to the-internet")
+        self.second_header = page.locator("xpath=.//h2[contains(text(), 'Available Examples')]")
+        # self.second_header = page.locator("h2", has_text="Available Examples")
+        self.links = page.locator("xpath=.//div[@id='content']/li/u/a")
+        # self.links = page.locator("div#content ul li a")
+        self.link_abtest = page.locator("xpath=.//a[contains(text(), 'A/B Testing')]")
+        # self.link_abtest = page.locator("a", has_text="A/B Testing")
+        self.link_addremoveelms = page.locator("xpath=.//a[contains(text(), 'Remove Elements')]")
+        # self.link_addremoveelms = page.locator("a", has_text="Add/Remove Elements")
+        self.link_basicauth = page.locator("xpath=.//a[contains(text(), 'Basic Auth')]")
+        # self.link_basicauth = page.locator("a", has_text="Basic Auth")
+        self.link_brokenimgs = page.locator("xpath=.//a[contains(text(), 'Broken Images')]")
+        # self.link_brokenimgs = page.locator("a", has_text="Broken Images")
+        self.link_chaldom = page.locator("xpath=.//a[contains(text(), 'Challenging DOM')]")
+        # self.link_chaldom = page.locator("a", has_text="Challenging DOM")
+        self.link_checkboxes = page.locator("xpath=.//a[contains(text(), 'Checkboxes')]")
+        # self.link_checkboxes = page.locator("a", has_text="Checkboxes")
 class MainPage:
     def __init__(self, page: Page, elms: MainPageElms):
         self.page = page # берем ссылку на страницу из теста
@@ -37,6 +46,9 @@ class MainPage:
     def click_chaldom(self):
         self.elms.link_chaldom.click()
         return self
+    def click_checkboxes(self):
+        self.elms.link_checkboxes.click()
+        return self
 
     # функции проверки (Методы-проверки - возвращают True/False или ничего, просто ждут)
     # Проверяем попадание на стартовую страницу
@@ -56,7 +68,7 @@ class MainPage:
         expect(self.elms.link_basicauth).to_be_visible()
         expect(self.elms.link_brokenimgs).to_be_visible()
         expect(self.elms.link_chaldom).to_be_visible()
-
+        expect(self.elms.link_checkboxes).to_be_visible()
     # def links_enabled(self): # не проверяем
 
     # проверяем количество ссылок

@@ -5,9 +5,10 @@ from playwright.sync_api import Page, expect
 
 class BasicAuthPageElms:
     def __init__(self, page: Page):
-        self.page_header = page.locator("h3", has_text="Basic Auth")
-        self.page_text = page.locator("xpath=//p[contains(text(), 'Congratulations! You must have the proper credentials.')]")
-
+        self.page_header = page.locator("xpath=.//h3[contains(text(), 'Basic Auth')]")
+        # self.page_header = page.locator("h3", has_text="Basic Auth")
+        self.page_text = page.locator("xpath=//p[contains(text(), 'Congratulations!')]")
+        # self.page_header = page.locator("p", has_text="Congratulations!)
 class BasicAuthPage:
     # создаем функцию начальных значений (ссылка на браузер из теста и локаторы)
     def __init__(self, page: Page, elms: BasicAuthPageElms):

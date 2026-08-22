@@ -5,9 +5,10 @@ from playwright.sync_api import Page, expect
 
 class ABTestPageElms:
     def __init__(self, page: Page):
+        # self.page_header = page.locator("xpath=.//h3[contains(text(), 'A/B Test')]")
         self.page_header = page.locator("h3", has_text="A/B Test")
-        self.page_text = page.locator("xpath=//p[contains(text(), 'Also known as split testing. This is a way in which businesses are able to simultaneously test and learn different versions of a page to see which text and/or functionality works best towards a desired outcome (e.g. a user action such as a click-through).')]")
-
+        # self.page_text = page.locator("xpath=.//p[contains(text(), 'Also known as split testing.')]")
+        self.page_text = page.locator("p", has_text="Also known as split testing.")
 class ABTestPage:
     # создаем функцию начальных значений (ссылка на браузер из теста и локаторы)
     def __init__(self, page: Page, elms: ABTestPageElms):

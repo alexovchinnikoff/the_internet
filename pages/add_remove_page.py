@@ -5,9 +5,13 @@ from playwright.sync_api import Page, expect
 
 class AddRemovePageElms:
     def __init__(self, page: Page):
-        self.page_header = page.locator("h3", has_text="Add/Remove Elements")
-        self.add_button = page.locator("button", has_text="Add Element")
-        self.delete_buttons = page.locator("div#elements > button")
+        self.page_header = page.locator("xpath=.//h3[contains(text(), 'Add/Remove Elements')]")
+        # self.page_header = page.locator("h3", has_text="Add/Remove Elements")
+        self.add_button = page.locator("xpath=.//button[contains(text(), 'Add Element')]")
+        # self.add_button = page.locator("button", has_text="Add Element")
+        self.delete_buttons = page.locator("xpath=.//button[contains(text(), 'Delete')]")
+        # self.delete_buttons = page.locator("div#elements > button")
+        # self.delete_buttons = page.locator("div.elements button")
 
 class AddRemovePage:
     def __init__(self, page: Page, elms: AddRemovePageElms):

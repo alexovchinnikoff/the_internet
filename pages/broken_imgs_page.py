@@ -5,8 +5,10 @@ from playwright.sync_api import Page, expect
 
 class BrokenImgsPageElms:
     def __init__(self, page: Page):
-        self.page_header = page.locator("h3", has_text="Broken Images")
-        self.page_images = page.locator("img[src$='.jpg']")
+        self.page_header = page.locator("xpath=.//h3[contains(text(), 'Broken Images')]")
+        # self.page_header = page.locator("h3", has_text="Broken Images")
+        self.page_images = page.locator("xpath=.//img[contains(@src, '.jpg')]")
+        # self.page_images = page.locator("img[src$='.jpg']")
 
 
 class BrokenImgsPage:

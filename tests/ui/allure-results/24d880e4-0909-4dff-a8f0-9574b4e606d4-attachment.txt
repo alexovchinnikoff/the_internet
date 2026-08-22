@@ -1,0 +1,6 @@
+
+✅ Страница успешно загружена
+📍 Текущий URL: https://the-internet.herokuapp.com/checkboxes
+📄 Виден заголовок страницы: Checkboxes
+⏳ Ожидание 1,5 секунды...
+📸 Скриншот сохранен как 'open_checkboxes_page_screenshot.png'
