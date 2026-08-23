@@ -5,7 +5,7 @@ from playwright.sync_api import Page, expect
 from pages.main_page import MainPage, MainPageElms
 from pages.chal_dom_page import ChalDomPage, ChalDomPageElms
 
-def test_open_chal_dom_page(page: Page):
+def test_chal_dom_page_open(page: Page):
     # Инициализируем классы
     elms = MainPageElms(page)
     main_page = MainPage(page, elms)

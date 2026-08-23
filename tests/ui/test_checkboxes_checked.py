@@ -6,7 +6,7 @@ from pages.main_page import MainPage, MainPageElms
 from pages.checkboxes_page import CheckBoxesPage, CheckBoxesPageElms
 
 # Открывает страницу
-def test_abtest_page_open(page: Page):
+def test_checkboxes_checked(page: Page):
     # объекты класса
     elms = MainPageElms(page)
     main_page = MainPage(page, elms)

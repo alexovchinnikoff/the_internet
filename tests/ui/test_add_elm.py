@@ -5,7 +5,7 @@ from playwright.sync_api import Page, expect
 from pages.main_page import MainPage, MainPageElms
 from pages.add_remove_page import AddRemovePage, AddRemovePageElms
 
-def test_open_add_remove_elements_page(page: Page):
+def test_add_elm(page: Page):
     # Инициализируем классы
     elms = MainPageElms(page)
     main_page = MainPage(page, elms)

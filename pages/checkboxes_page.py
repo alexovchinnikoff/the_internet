@@ -6,7 +6,7 @@ from playwright.sync_api import Page, expect
 class CheckBoxesPageElms:
     def __init__(self, page: Page):
         self.page_header = page.locator("xpath=.//h3[contains(text(), 'Checkboxes')]")
-        # self.page_header = page.locator("h3", has_text="Checkboxes'")
+        # self.page_header = page.locator("h3", has_text="Checkboxes")
         self.page_checkboxes = page.locator("xpath=//input[@type='checkbox']")
         # self.page_text = page.locator("input", has_text = "checkbox")
         self.checked_checkboxes = page.locator("xpath=//input[@type='checkbox' and @checked]")

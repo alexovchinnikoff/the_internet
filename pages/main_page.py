@@ -24,6 +24,8 @@ class MainPageElms:
         # self.link_chaldom = page.locator("a", has_text="Challenging DOM")
         self.link_checkboxes = page.locator("xpath=.//a[contains(text(), 'Checkboxes')]")
         # self.link_checkboxes = page.locator("a", has_text="Checkboxes")
+        self.link_context_menu = page.locator("xpath=.//a[contains(text(), 'Context Menu')]")
+        # self.link_context_menu = page.locator("a", has_text="Context Menu")
 class MainPage:
     def __init__(self, page: Page, elms: MainPageElms):
         self.page = page # берем ссылку на страницу из теста
@@ -48,6 +50,9 @@ class MainPage:
         return self
     def click_checkboxes(self):
         self.elms.link_checkboxes.click()
+        return self
+    def click_context_menu(self):
+        self.elms.link_context_menu.click()
         return self
 
     # функции проверки (Методы-проверки - возвращают True/False или ничего, просто ждут)

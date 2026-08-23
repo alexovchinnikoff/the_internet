@@ -6,7 +6,7 @@ from pages.main_page import MainPage, MainPageElms
 from pages.add_remove_page import AddRemovePage, AddRemovePageElms
 
 # Открывает страницу
-def test_open_add_remove_elements_page(page: Page):
+def test_add_and_delete_elm(page: Page):
     # Инициализируем классы
     elms = MainPageElms(page)
     main_page = MainPage(page, elms)

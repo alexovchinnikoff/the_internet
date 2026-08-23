@@ -1,0 +1,9 @@
+
+✅ Страница успешно загружена
+📍 Текущий URL: https://the-internet.herokuapp.com/context_menu
+📄 Виден заголовок страницы: Context Menu
+📄 Виден заголовок страницы: Context menu items are custom additions that appear in the right-click menu.
+📄 Виден заголовок страницы: Right-click in the box below to see one called 'the-internet'. When you click it, it will trigger a JavaScript alert.
+📄 Виден текст: 1
+⏳ Ожидание 1,5 секунды...
+📸 Скриншот сохранен как 'open_checkboxes_page_screenshot.png'
