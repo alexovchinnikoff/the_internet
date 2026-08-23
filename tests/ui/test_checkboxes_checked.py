@@ -20,7 +20,7 @@ def test_abtest_page_open(page: Page):
     # объекты класса
     elms = CheckBoxesPageElms(page)
     checkboxes_page = CheckBoxesPage(page, elms)
-    checkboxes_page.click_checkboxes()  # кликаем по ссылке
+    checkboxes_page.click_checkbox_upper()  # кликаем по ссылке
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
     '''
     checkboxes_page.url_check()  # вызываем проверку урла

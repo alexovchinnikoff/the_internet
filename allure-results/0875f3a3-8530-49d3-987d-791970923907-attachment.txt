@@ -1,0 +1,8 @@
+
+✅ Страница успешно загружена
+📍 Текущий URL: https://the-internet.herokuapp.com/challenging_dom
+📄 Виден заголовок страницы: Challenging DOM
+📄 Видны 3 ссылки стилизованные под кнопки
+📄 Видна 1  таблица с 1 шапкой и 10 рядами, 7 столбцами
+⏳ Ожидание 1,5 секунд...
+📸 Скриншот сохранен как 'open_challenging_dom_page_screenshot.png'

@@ -27,5 +27,8 @@ class CheckBoxesPage:
     def url_check(self):
         expect(self.page).to_have_url("https://the-internet.herokuapp.com/checkboxes")
 
-    def click_checkboxes(self):
+    def click_checkbox_upper(self):
         self.elms.page_checkboxes.first.click()
+
+    def click_checkbox_lower(self):
+        self.elms.page_checkboxes.nth(1).click()
