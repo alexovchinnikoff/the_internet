@@ -52,10 +52,10 @@ python3 --version
 
 ```bash
 # Windows
-python -m venv venv
+python -m .venv .venv
 
 # Mac / Linux
-python3 -m venv venv
+python3 -m .venv .venv
 ```
 
 ### Активация виртуального окружения

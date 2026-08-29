@@ -3,15 +3,25 @@
 import pytest
 from playwright.sync_api import Page, expect
 
+
 class BrokenImgsPageElms:
+
+
+    PAGE_HEADER = "xpath=//h3[contains(text(), 'Broken Images')]"
+    PAGE_IMAGES = "xpath=//img[contains(@src, '.jpg')]"
+
+    '''
     def __init__(self, page: Page):
         self.page_header = page.locator("xpath=.//h3[contains(text(), 'Broken Images')]")
         # self.page_header = page.locator("h3", has_text="Broken Images")
         self.page_images = page.locator("xpath=.//img[contains(@src, '.jpg')]")
         # self.page_images = page.locator("img[src$='.jpg']")
+    '''
 
 
 class BrokenImgsPage:
+
+
     # создаем функцию начальных значений (ссылка на браузер из теста и локаторы)
     def __init__(self, page: Page, elms: BrokenImgsPageElms):
         self.page = page
@@ -24,7 +34,7 @@ class BrokenImgsPage:
 
     # Методы-проверки (возвращают True/False или ничего, просто ждут)
     def page_header_visible(self):
-        expect(self.elms.page_header).to_be_visible()
+        expect(self.elms.PAGE_HEADER).to_be_visible()
 
     # def page_images_visible(self):
         # expect(self.page_images).to_be_visible()
@@ -34,5 +44,5 @@ class BrokenImgsPage:
         return self
 
     def images_count(self, expected_count: int):
-        expect(self.elms.page_images).to_have_count(expected_count)
+        expect(self.elms.PAGE_IMAGES).to_have_count(expected_count)
         return self

@@ -1,14 +1,14 @@
 # tests/ui/test_add_remove_elms_page_open.py
 
 import pytest, time
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 from pages.main_page import MainPage, MainPageElms
 from pages.add_remove_page import AddRemovePage, AddRemovePageElms
 
 # Открывает страницу и ждет 3 секунды
 def test_add_remove_elms_page_open(page: Page):
     # Инициализируем классы
-    elms = MainPageElms(page)
+    elms = MainPageElms()
     main_page = MainPage(page, elms)
 
     # Действия и проверки
@@ -18,32 +18,34 @@ def test_add_remove_elms_page_open(page: Page):
     main_page.click_addremoveelms()# вызываем клик по элементу
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
 
-    elms = AddRemovePageElms(page)
+    elms = AddRemovePageElms()
     add_remove_page = AddRemovePage(page, elms)
+
     '''
     add_remove_page.page_header_visible()# вызываем проверку видимости
     add_remove_page.add_button_visible()# вызываем проверку видимости
     add_remove_page.no_delete_buttons()
     # add_remove_elms_page_object.click_add_element()
     '''
-    assert "/add_remove_elements" in page.url # сделал не строгую проверку. в отличие от остальных страниц, здесь урл со слэшем в конце /add_remove_element/
-    assert elms.page_header.is_visible()
-    assert elms.add_button.is_visible()
-    assert elms.add_button.count() == 1
-    assert elms.delete_buttons.count() == 0
 
-    # page_title = page.title()
-    current_url = page.url  # Текущий URL
-    page_header = add_remove_page.elms.page_header.inner_text()
-    add_button_number = add_remove_page.elms.add_button.count()
-    delete_buttons_number = add_remove_page.elms.delete_buttons.count()
+    # локаторы к переменные
+    page_header = page.locator(elms.PAGE_HEADER)
+    add_button = page.locator(elms.ADD_BUTTON)
+    delete_buttons = page.locator(elms.DELETE_BUTTONS)
+
+    # проверки
+    assert "/add_remove_elements" in page.url # сделал не строгую проверку. в отличие от остальных страниц, здесь урл со слэшем в конце /add_remove_element/
+    assert page_header.is_visible()
+    assert add_button.is_visible()
+    assert add_button.count() == 1
+    assert delete_buttons.count() == 0
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")
-    print(f"📍 Текущий URL: {current_url}")
-    print(f"📄 Виден заголовок страницы: {page_header}")
-    print(f"📄 Видна кнопка Add Button в количестве: {add_button_number}")
-    print(f"📄 Видна кнопка Delete в количестве: {delete_buttons_number}")
+    print(f"📍 Текущий URL: {page.url}")
+    print(f"📄 Виден заголовок страницы: {page_header.inner_text()}")
+    print(f"📄 Видна кнопка Add Button в количестве: {add_button.count()}")
+    print(f"📄 Видна кнопка Delete в количестве: {delete_buttons.count()}")
     print("⏳ Ожидание 1,5 секунды...")
 
     # Скриншот

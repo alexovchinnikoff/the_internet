@@ -1,0 +1,7 @@
+
+✅ Страница успешно загружена
+📍 Текущий URL: https://admin:admin@the-internet.herokuapp.com/basic_auth
+📄 Виден заголовок страницы: Basic Auth
+📄 Виден текст: Congratulations! You must have the proper credentials.
+⏳ Ожидание 3 секунд...
+📸 Скриншот сохранен как 'open_basic_auth_page_screenshot.png'

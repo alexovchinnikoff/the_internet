@@ -8,7 +8,7 @@ from pages.checkboxes_page import CheckBoxesPage, CheckBoxesPageElms
 # Открывает страницу
 def test_checkboxes_page_open(page: Page):
     # объекты класса
-    elms = MainPageElms(page)
+    elms = MainPageElms()
     main_page = MainPage(page, elms)
 
     # Действия
@@ -18,29 +18,27 @@ def test_checkboxes_page_open(page: Page):
     page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
 
     # объекты класса
-    elms = CheckBoxesPageElms(page)
+    elms = CheckBoxesPageElms()
     checkboxes_page = CheckBoxesPage(page, elms)
 
     '''
     checkboxes_page.url_check()  # вызываем проверку урла
     checkboxes_page.header_and_checkboxes_visible()# вызываем проверку видимости
     '''
+    # локаторы к переменные
+    page_header = page.locator(elms.PAGE_HEADER)
+    page_checkboxes = page.locator(elms.PAGE_CHECKBOXES)
 
+    # проверки
     assert "/checkboxes" in page.url
-    assert elms.page_header.is_visible()
-    assert elms.page_checkboxes.count() == 2
-
-    # page_title = page.title()
-    current_url = page.url  # Текущий URL
-    page_title = page.title()  # Заголовок страницы
-    header_text = elms.page_header.inner_text()
-    checkboxes_number = checkboxes_page.elms.page_checkboxes.count()
+    assert page_header.is_visible()
+    assert page_checkboxes.count() == 2
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")
-    print(f"📍 Текущий URL: {current_url}")
-    print(f"📄 Виден заголовок страницы: {header_text}")
-    print(f"📄 Виден текст: {checkboxes_number}")
+    print(f"📍 Текущий URL: {page.url}")
+    print(f"📄 Виден заголовок страницы: {page_header.inner_text()}")
+    print(f"📄 Виден текст: {page_checkboxes.count()}")
     print("⏳ Ожидание 1,5 секунды...")
 
     # Скриншот

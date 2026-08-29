@@ -1,8 +1,0 @@
-
-✅ Стартовая страница успешно загружена
-📍 Текущий URL: https://the-internet.herokuapp.com/
-📄 Виден приветственный заголовок: Welcome to the-internet
-📄 Виден второй заголовок: Available Examples
-📄 В списке найдено 44 ссылок (пунктов меню).
-⏳ Ожидание 1,5 секунды...
-📸 Скриншот сохранен как 'open_main_page_screenshot.png'

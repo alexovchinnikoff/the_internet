@@ -3,8 +3,20 @@
 import pytest
 from playwright.sync_api import Page, expect
 
-# создаем класс(шаблон страницы), в который пишем локаторы элементов страницы
+
 class MainPageElms:
+    WELCOME_HEADER = "//h1[contains(text(), 'Welcome to the-internet')]"
+    SECOND_HEADER = "//h2[contains(text(), 'Available Examples')]"
+    LINKS = "//div[@id='content']/ul/li/a"
+    LINK_ABTEST = "//a[contains(text(), 'A/B Testing')]"
+    LINK_ADDREMOVEELMS = "//a[contains(text(), 'Remove Elements')]"
+    LINK_BASICAUTH = "//a[contains(text(), 'Basic Auth')]"
+    LINK_BROKENIMGS = "//a[contains(text(), 'Broken Images')]"
+    LINK_CHALDOM = "//a[contains(text(), 'Challenging DOM')]"
+    LINK_CHECKBOXES = "//a[contains(text(), 'Checkboxes')]"
+    LINK_CONTEXTMENU = "//a[contains(text(), 'Context Menu')]"
+
+    '''
     def __init__(self, page: Page):
         self.welcome_header = page.locator("xpath=.//h1[contains(text(), 'Welcome to the-internet')]")
         # self.welcome_header = page.locator("h1", has_text="Welcome to the-internet")
@@ -26,34 +38,40 @@ class MainPageElms:
         # self.link_checkboxes = page.locator("a", has_text="Checkboxes")
         self.link_context_menu = page.locator("xpath=.//a[contains(text(), 'Context Menu')]")
         # self.link_context_menu = page.locator("a", has_text="Context Menu")
+    '''
+
+
 class MainPage:
+
+
     def __init__(self, page: Page, elms: MainPageElms):
         self.page = page # берем ссылку на страницу из теста
         self.elms = elms # берем ссылку на объект с локаторами
+
     def go_to(self):
         self.page.goto("https://the-internet.herokuapp.com/")
         return self
+
     def click_abtest(self):
-        self.elms.link_abtest.click() # self.elms.link_abtest.click()
-        return self
+        self.page.locator(self.elms.LINK_ABTEST).click()
+
     def click_addremoveelms(self):
-        self.elms.link_addremoveelms.click()
-        return self
+        self.page.locator(self.elms.LINK_ADDREMOVEELMS).click()
+
     def click_basicauth(self):
-        self.elms.link_basicauth.click()
-        return self
+        self.page.locator(self.elms.LINK_BASICAUTH).click()
+
     def click_brokenimgs(self):
-        self.elms.link_brokenimgs.click()
-        return self
+        self.page.locator(self.elms.LINK_BROKENIMGS).click()
+
     def click_chaldom(self):
-        self.elms.link_chaldom.click()
-        return self
+        self.page.locator(self.elms.LINK_CHALDOM).click()
+
     def click_checkboxes(self):
-        self.elms.link_checkboxes.click()
-        return self
+        self.page.locator(self.elms.LINK_CHECKBOXES).click()
+
     def click_context_menu(self):
-        self.elms.link_context_menu.click()
-        return self
+        self.page.locator(self.elms.LINK_CONTEXTMENU).click()
 
     # функции проверки (Методы-проверки - возвращают True/False или ничего, просто ждут)
     # Проверяем попадание на стартовую страницу
