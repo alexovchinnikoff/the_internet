@@ -1,0 +1,105 @@
+# pages/mainpage_2.py
+
+import pytest
+from playwright.sync_api import Page, expect
+from base.user_client import User
+
+
+class MainPageElms:
+
+    WELCOME_HEADER = "//h1[contains(text(), 'Welcome to the-internet')]"
+    SECOND_HEADER = "//h2[contains(text(), 'Available Examples')]"
+    LINKS = "//div[@id='content']/ul/li/a"
+    LINK_ABTEST = "//a[contains(text(), 'A/B Testing')]"
+    LINK_ADDREMOVEELMS = "//a[contains(text(), 'Remove Elements')]"
+    LINK_BASICAUTH = "//a[contains(text(), 'Basic Auth')]"
+    LINK_BROKENIMGS = "//a[contains(text(), 'Broken Images')]"
+    LINK_CHALDOM = "//a[contains(text(), 'Challenging DOM')]"
+    LINK_CHECKBOXES = "//a[contains(text(), 'Checkboxes')]"
+    LINK_CONTEXTMENU = "//a[contains(text(), 'Context Menu')]"
+
+    '''
+    def __init__(self, page: Page):
+        self.welcome_header = page.locator("xpath=.//h1[contains(text(), 'Welcome to the-internet')]")
+        # self.welcome_header = page.locator("h1", has_text="Welcome to the-internet")
+        self.second_header = page.locator("xpath=.//h2[contains(text(), 'Available Examples')]")
+        # self.second_header = page.locator("h2", has_text="Available Examples")
+        self.links = page.locator("xpath=.//div[@id='content']/ul/li/a")
+        #self.links = page.locator("div#content ul li a")
+        self.link_abtest = page.locator("xpath=.//a[contains(text(), 'A/B Testing')]")
+        # self.link_abtest = page.locator("a", has_text="A/B Testing")
+        self.link_addremoveelms = page.locator("xpath=.//a[contains(text(), 'Remove Elements')]")
+        # self.link_addremoveelms = page.locator("a", has_text="Add/Remove Elements")
+        self.link_basicauth = page.locator("xpath=.//a[contains(text(), 'Basic Auth')]")
+        # self.link_basicauth = page.locator("a", has_text="Basic Auth")
+        self.link_brokenimgs = page.locator("xpath=.//a[contains(text(), 'Broken Images')]")
+        # self.link_brokenimgs = page.locator("a", has_text="Broken Images")
+        self.link_chaldom = page.locator("xpath=.//a[contains(text(), 'Challenging DOM')]")
+        # self.link_chaldom = page.locator("a", has_text="Challenging DOM")
+        self.link_checkboxes = page.locator("xpath=.//a[contains(text(), 'Checkboxes')]")
+        # self.link_checkboxes = page.locator("a", has_text="Checkboxes")
+        self.link_context_menu = page.locator("xpath=.//a[contains(text(), 'Context Menu')]")
+        # self.link_context_menu = page.locator("a", has_text="Context Menu")
+    '''
+
+
+class MainPage:
+
+    url = "https://the-internet.herokuapp.com/"
+
+
+'''
+    def __init__(self, page: Page, elms: MainPageElms):
+        self.page = page # берем ссылку на страницу из теста
+        self.elms = elms # берем ссылку на объект с локаторами
+        self.user = User(page)
+
+    def go_to(self):
+        self.page.goto(self.url)
+        return self
+
+    def click_abtest(self):
+        self.page.locator(self.elms.LINK_ABTEST).click()
+
+    def click_addremoveelms(self):
+        self.page.locator(self.elms.LINK_ADDREMOVEELMS).click()
+
+    def click_basicauth(self):
+        self.page.locator(self.elms.LINK_BASICAUTH).click()
+
+    def click_brokenimgs(self):
+        self.page.locator(self.elms.LINK_BROKENIMGS).click()
+
+    def click_chaldom(self):
+        self.page.locator(self.elms.LINK_CHALDOM).click()
+
+    def click_checkboxes(self):
+        self.page.locator(self.elms.LINK_CHECKBOXES).click()
+
+    def click_context_menu(self):
+        self.page.locator(self.elms.LINK_CONTEXTMENU).click()
+
+    # функции проверки (Методы-проверки - возвращают True/False или ничего, просто ждут)
+    # Проверяем попадание на стартовую страницу
+    def url_check(self):
+        expect(self.page).to_have_url("https://the-internet.herokuapp.com/")
+
+    # Проверяем заголовки: рендеринг, состояние
+    def headers_visible(self):
+        expect(self.elms.welcome_header).to_be_visible()
+        expect(self.elms.second_header).to_be_visible()
+
+    # Проверяем ссылки: рендеринг, состояние UI, ложные клики
+    def links_visible(self):
+        expect(self.elms.link_abtest).to_be_visible()
+        expect(self.elms.link_addremoveelms).to_be_visible()
+        expect(self.elms.link_basicauth).to_be_visible()
+        expect(self.elms.link_brokenimgs).to_be_visible()
+        expect(self.elms.link_chaldom).to_be_visible()
+        expect(self.elms.link_checkboxes).to_be_visible()
+    # def links_enabled(self): # не проверяем
+
+    # проверяем количество ссылок
+    def links_count(self, expected_count: int): # проверяем количество ссылок
+        expect(self.elms.links).to_have_count(expected_count)
+    '''

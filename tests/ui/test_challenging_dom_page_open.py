@@ -1,0 +1,99 @@
+# tests/ui/test_challenging_dom_page_open.py
+
+import pytest, time
+from playwright.sync_api import Page
+from base.user_client import User
+from pages.main_page import MainPage, MainPageElms
+from pages.chal_dom_page import ChalDomPageElms
+
+def test_chal_dom_page_open(page: Page):
+    # Инициализируем класс
+    user = User(page)
+    # Действия
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
+
+    user.click_element(MainPageElms.LINK_CHALDOM)
+    user.wait_sec(1)
+
+    elms = ChalDomPageElms()
+
+    # локаторы к переменные
+    page_header = page.locator(elms.PAGE_HEADER)
+    page_text = page.locator(elms.PAGE_TEXT)
+    button_upper = page.locator(elms.BUTTON_UPPER)
+    button_middle = page.locator(elms.BUTTON_MIDDLE)
+    button_lower = page.locator(elms.BUTTON_LOWER)
+    buttons = page.locator(elms.BUTTONS)
+    table = page.locator(elms.TABLE)
+    thead = page.locator(elms.THEAD)
+    thead_row = page.locator(elms.THEAD_ROW)
+    thead_headers = page.locator(elms.THEAD_HEADERS)
+    header_0 =  page.locator(elms.LOREM)
+    header_1 = page.locator(elms.IPSUM)
+    header_2 = page.locator(elms.DOLOR)
+    header_3 = page.locator(elms.SIT)
+    header_4 = page.locator(elms.AMET)
+    header_5 = page.locator(elms.DICERET)
+    header_6 = page.locator(elms.ACTION)
+    table_body = page.locator(elms.TABLE_BODY)
+    table_body_rows = page.locator(elms.TABLE_BODY_ROWS)
+    table_body_headers = page.locator(elms.TABLE_BODY_HEADERS)
+    href_edit = page.locator(elms.HREF_EDIT)
+    href_delete = page.locator(elms.HREF_DELETE)
+    page_canvas = page.locator(elms.PAGE_CANVAS)
+
+    # проверки
+    user.make_screenshot("check_challenging_dom_page_open")
+    assert "/challenging_dom" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_text.is_visible(), "Текст виден"
+
+    assert button_upper.is_visible(), "Кнопка видна"
+    assert button_middle.is_visible(), "Кнопка видна"
+    assert button_lower.is_visible(), "Кнопка видна"
+    assert buttons.count() == 3, "Количество кнопок корректное"
+
+    assert table.is_visible(), "Таблица видна"
+    assert table.count() == 1, "Количество таблиц корректное"
+    assert thead.count() == 1, "Количество шапок в таблице корректное"
+    assert thead_row.count() == 1, "Количество рядов в шапке таблицы корректное"
+    assert thead_headers.count() == 7, "Количество ячеек в шапке в таблице корректное"
+
+    assert table_body.count() == 1, "Количество тел таблицы корректное"
+    assert table_body_rows.count() == 10, "Количество рядов в теле таблицы корректное"
+    assert table_body_headers.count() == 70, "Количество ячеек в теле таблицы корректное"
+
+    assert href_edit.count() == 10, "Количество ссылок Редактировать в таблице корректное"
+    assert href_delete.count() == 10, "Количество ссылок Удалить в таблице корректное"
+
+    assert page_canvas.is_visible(), "Канвас виден"
+    assert page_canvas.count() == 1, "количество Канвасов корректное"
+
+    assert header_0.is_visible(), "1 Заголовок таблицы виден"
+    assert header_1.is_visible(), "2 Заголовок таблицы виден"
+    assert header_2.is_visible(), "3 Заголовок таблицы виден"
+    assert header_3.is_visible(), "4 Заголовок таблицы виден"
+    assert header_4.is_visible(), "5 Заголовок таблицы виден"
+    assert header_5.is_visible(), "6 Заголовок таблицы виден"
+    assert header_6.is_visible(), "7 Заголовок таблицы виден"
+    '''
+    count = elms.thead_headers.count()
+    for i in range(count):
+            header = elms.thead_headers.nth(i)
+            assert header.is_visible()
+    '''
+
+
+    # Вывод результатов в консоль
+    print(f"\n✅ Страница успешно загружена")
+    print(f"📍 Текущий URL: {page.url}")
+    print(f"📄 Виден заголовок страницы: {page_header.inner_text()}")
+    print(f"📄 Виден текст страницы: {page_text.inner_text()}")
+    print(f"📄 Видны {buttons.count()} ссылки стилизованные под кнопки")
+    print(f"📄 Видна {table.count()}  таблица с {thead.count()} шапкой и {table_body_rows.count()} рядами, {thead_headers.count()} столбцами")
+    print("⏳ Ожидание 1,5 секунд...")
+
+    # Скриншот
+    page.screenshot(path="D:/Projects/the_internet/prtscr/open_challenging_dom_page_screenshot.png")
+    print("📸 Скриншот сохранен как 'open_challenging_dom_page_screenshot.png'")
