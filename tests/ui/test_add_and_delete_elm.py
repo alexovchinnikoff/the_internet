@@ -29,11 +29,12 @@ def test_add_and_delete_elm(page: Page):
     delete_buttons_locator = page.locator(elms.DELETE_BUTTONS)
 
     # проверки
-    assert "/add_remove_elements" in page.url
-    assert header_locator.is_visible()
-    assert add_button_locator.is_visible()
-    assert add_button_locator.count() == 1
-    assert delete_buttons_locator.count() == 0
+    user.make_screenshot("check_add_and_delete_elm")
+    assert "/add_remove_elements" in page.url, "Урл корректный"# сделал не строгую проверку. в отличие от остальных страниц, здесь урл со слэшем в конце /add_remove_element/
+    assert header_locator.is_visible(), "Заголовок виден"
+    assert add_button_locator.is_visible(), "Кнопка видна"
+    assert add_button_locator.count() == 1, "Количество кнопок корректное"
+    assert delete_buttons_locator.count() == 0, "Количество кнопок корректное"
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

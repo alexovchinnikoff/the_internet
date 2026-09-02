@@ -7,7 +7,7 @@ from base.user_client import User
 
 class ABTestPageElms:
 
-    PAGE_HEADER = "xpath=//h3[contains(text(), 'A/B Test')]"
+    PAGE_HEADER = "xpath=//h3[(text(), 'A/B Test')]"
     PAGE_TEXT = "xpath=//p[contains(text(), 'Also known as split testing.')]"
 
     '''

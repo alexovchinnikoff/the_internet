@@ -26,10 +26,11 @@ def test_broken_imgs_page_open(page: Page):
     page_images = page.locator(elms.PAGE_IMAGES)
 
     # проверки
-    assert "/broken_images" in page.url
-    assert page_header.is_visible()
-    # assert elms.page_images.is_visible() # пока убрал чтоб тест не падал.но надо как-то проверить что они битые
-    assert page_images.count() == 3
+    user.make_screenshot("check_broken_images_page_open")
+    assert "/broken_images" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_images.is_visible(), "Картинки видны"
+    assert page_images.count() == 3, "Количество картинок корректное"
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

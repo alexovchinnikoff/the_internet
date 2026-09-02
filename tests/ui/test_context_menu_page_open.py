@@ -25,10 +25,11 @@ def test_context_menu_page_open(page: Page):
     page_text_lower = page.locator(elms.PAGE_TEXT_LOWER)
 
     # проверки
-    assert "/context_menu" in page.url
-    assert page_header.is_visible()
-    assert page_text_upper.count() == 1
-    assert page_text_lower.count() == 1
+    user.make_screenshot("check_context_menu_page_open")
+    assert "/context_menu" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_text_upper.count() == 1, "Количество чекбоксов корректное"
+    assert page_text_lower.count() == 1, "Количество чекбоксов корректное"
     # assert page.right_click_page_box() == <script> function displayMessage() {window.alert('You selected a context menu')} </script>
 
     # Вывод результатов в консоль

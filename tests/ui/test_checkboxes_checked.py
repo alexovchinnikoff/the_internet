@@ -28,10 +28,11 @@ def test_checkboxes_checked(page: Page):
     checked_checkboxes = page.locator(elms.CHECKED_CHECKBOXES)
 
     # проверки
-    assert "/checkboxes" in page.url
-    assert page_header.is_visible()
-    assert page_checkboxes.count() == 2
-    assert checked_checkboxes.count() == 2
+    user.make_screenshot("check_checkboxes_checked")
+    assert "/checkboxes" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_checkboxes.count() == 2, "Количество чекбоксов корректное"
+    assert checked_checkboxes.count() == 2, "Количество чекбоксов корректное"
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

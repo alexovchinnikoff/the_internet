@@ -24,9 +24,10 @@ def test_checkboxes_page_open(page: Page):
     page_checkboxes = page.locator(elms.PAGE_CHECKBOXES)
 
     # проверки
-    assert "/checkboxes" in page.url
-    assert page_header.is_visible()
-    assert page_checkboxes.count() == 2
+    user.make_screenshot("check_checkboxes_page_open")
+    assert "/checkboxes" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_checkboxes.count() == 2, "Количество чекбоксов корректное"
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

@@ -44,39 +44,39 @@ def test_chal_dom_page_open(page: Page):
     page_canvas = page.locator(elms.PAGE_CANVAS)
 
     # проверки
-    assert "/challenging_dom" in page.url
-    assert page_header.is_visible()
-    assert page_text.is_visible()
+    user.make_screenshot("check_challenging_dom_page_open")
+    assert "/challenging_dom" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_text.is_visible(), "Текст виден"
 
-    assert button_upper.is_visible()
-    assert button_middle.is_visible()
-    assert button_lower.is_visible()
-    assert buttons.count() == 3
+    assert button_upper.is_visible(), "Кнопка видна"
+    assert button_middle.is_visible(), "Кнопка видна"
+    assert button_lower.is_visible(), "Кнопка видна"
+    assert buttons.count() == 3, "Количество кнопок корректное"
 
-    assert table.is_visible()
-    assert table.count() == 1
-    assert thead.count() == 1
-    assert thead_row.count() == 1
-    assert thead_headers.count() == 7
+    assert table.is_visible(), "Таблица видна"
+    assert table.count() == 1, "Количество таблиц корректное"
+    assert thead.count() == 1, "Количество шапок в таблице корректное"
+    assert thead_row.count() == 1, "Количество рядов в шапке таблицы корректное"
+    assert thead_headers.count() == 7, "Количество ячеек в шапке в таблице корректное"
 
-    assert thead_headers.count() == 7
-    assert table_body.count() == 1
-    assert table_body_rows.count() == 10
-    assert table_body_headers.count() == 70
+    assert table_body.count() == 1, "Количество тел таблицы корректное"
+    assert table_body_rows.count() == 10, "Количество рядов в теле таблицы корректное"
+    assert table_body_headers.count() == 70, "Количество ячеек в теле таблицы корректное"
 
-    assert href_edit.count() == 10
-    assert href_delete.count() == 10
+    assert href_edit.count() == 10, "Количество ссылок Редактировать в таблице корректное"
+    assert href_delete.count() == 10, "Количество ссылок Удалить в таблице корректное"
 
-    assert page_canvas.is_visible()
-    assert page_canvas.count() == 1
+    assert page_canvas.is_visible(), "Канвас виден"
+    assert page_canvas.count() == 1, "количество Канвасов корректное"
 
-    assert header_0.is_visible()
-    assert header_1.is_visible()
-    assert header_2.is_visible()
-    assert header_3.is_visible()
-    assert header_4.is_visible()
-    assert header_5.is_visible()
-    assert header_6.is_visible()
+    assert header_0.is_visible(), "1 Заголовок таблицы виден"
+    assert header_1.is_visible(), "2 Заголовок таблицы виден"
+    assert header_2.is_visible(), "3 Заголовок таблицы виден"
+    assert header_3.is_visible(), "4 Заголовок таблицы виден"
+    assert header_4.is_visible(), "5 Заголовок таблицы виден"
+    assert header_5.is_visible(), "6 Заголовок таблицы виден"
+    assert header_6.is_visible(), "7 Заголовок таблицы виден"
     '''
     count = elms.thead_headers.count()
     for i in range(count):

@@ -13,6 +13,7 @@ def test_abtest_page_open(page: Page):
     # Действия
     user.open_page(MainPage.url)
     user.wait_sec(1)  # ждем 1500 миллисекунд = 1,5 секунды
+
     user.click_element(MainPageElms.LINK_ABTEST)
     user.wait_sec(1)  # ждем 1500 миллисекунд = 1,5 секунды
 
@@ -23,15 +24,12 @@ def test_abtest_page_open(page: Page):
     header_locator = page.locator(elms.PAGE_HEADER)
     text_locator = page.locator(elms.PAGE_TEXT)
 
-    '''
-    abtest_page.url_check()  # вызываем проверку урла
-    abtest_page.header_and_text_visible()# вызываем проверку видимости
-    '''
-
     # проверки
+    user.make_screenshot("abtest_page_open")
     assert "/abtest" in page.url, "Урл корректный"
     assert header_locator.is_visible(), "Заголовок виден"
     assert text_locator.is_visible(), "Текст виден"
+
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

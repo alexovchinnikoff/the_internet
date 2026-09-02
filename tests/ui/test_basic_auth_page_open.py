@@ -26,9 +26,10 @@ def test_basic_auth_page_open(page: Page):
     page_text = page.locator(elms.PAGE_TEXT)
 
     # проверки
-    assert "/basic_auth" in page.url
-    assert page_header.is_visible()
-    assert page_text.is_visible()
+    user.make_screenshot("check_basic_auth_page_open")
+    assert "/basic_auth" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_text.is_visible(), "Текст виден"
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

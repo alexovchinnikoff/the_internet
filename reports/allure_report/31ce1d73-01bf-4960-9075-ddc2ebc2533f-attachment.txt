@@ -1,7 +1,0 @@
-
-✅ Страница успешно загружена
-📍 Текущий URL: https://the-internet.herokuapp.com/broken_images
-📄 Виден заголовок страницы: Broken Images
-📄 Количество картинок: 3
-⏳ Ожидание 1,5 секунд...
-📸 Скриншот сохранен как 'open_broken_images_page_screenshot.png'

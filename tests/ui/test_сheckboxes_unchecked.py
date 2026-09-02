@@ -26,7 +26,12 @@ def test_checkboxes_unchecked(page: Page):
     page_header = page.locator(elms.PAGE_HEADER)
     page_checkboxes = page.locator(elms.PAGE_CHECKBOXES)
     checked_checkboxes = page.locator(elms.CHECKED_CHECKBOXES)
-
+    # проверки
+    user.make_screenshot("check_check_checkboxes_unchecked")
+    assert "/checkboxes" in page.url, "Урл корректный"
+    assert page_header.is_visible(), "Заголовок виден"
+    assert page_checkboxes.count() == 2, "Количество чекбоксов корректное"
+    assert checked_checkboxes.count() == 0, "Количество чекбоксов корректное"
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")
     print(f"📍 Текущий URL: {page.url}")
