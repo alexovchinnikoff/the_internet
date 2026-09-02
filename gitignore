@@ -3,5 +3,6 @@ venv/
 .idea/
 .pytest_cache/
 __pycache__/
-reports/allure_report/
-*.doc 
+*.doc
+*.txt
+*.json  
