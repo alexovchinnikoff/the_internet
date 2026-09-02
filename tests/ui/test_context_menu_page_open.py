@@ -2,29 +2,23 @@
 
 import pytest, time
 from playwright.sync_api import Page
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 from pages.context_menu_page import ContextMenuPage, ContextMenuPageElms
 
 # Открывает страницу
 def test_context_menu_page_open(page: Page):
-    # объекты класса
-    elms = MainPageElms()
-    main_page = MainPage(page, elms)
-
+    # класс
+    user = User(page)
     # Действия
-    main_page.go_to() # открываем стартовую страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    main_page.click_context_menu()# кликаем по ссылке
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
 
-    # объекты класса
+    user.click_element(MainPageElms.LINK_CONTEXTMENU)
+    user.wait_sec(1)
+
     elms = ContextMenuPageElms()
-    checkboxes_page = ContextMenuPage(page, elms)
 
-    '''
-    checkboxes_page.url_check()  # вызываем проверку урла
-    checkboxes_page.header_and_checkboxes_visible()# вызываем проверку видимости
-    '''
     # локаторы к переменные
     page_header = page.locator(elms.PAGE_HEADER)
     page_text_upper = page.locator(elms.PAGE_TEXT_UPPER)

@@ -3,6 +3,7 @@ $ nano .gitignore
 
 # игнорировать файл file_name.txt
 file_name.txt
+D:\Projects\the_internet\reports\allure_report
 # игнорировать все файлы с расширением .doc
 *.doc 
 # игнорировать файл release.properties в директории target

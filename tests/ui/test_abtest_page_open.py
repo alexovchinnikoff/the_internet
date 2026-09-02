@@ -1,21 +1,20 @@
 # tests/ui/test_abtest_page_open.py
 
-import pytest, time
 from playwright.sync_api import Page
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
-from pages.abtest_page import ABTestPage, ABTestPageElms
+from pages.abtest_page import ABTestPageElms
 
 # Открывает страницу
 def test_abtest_page_open(page: Page):
     # объекты класса
-    elms = MainPageElms()
-    main_page = MainPage(page, elms)
+    user = User(page)
 
     # Действия
-    main_page.go_to() # открываем стартовую страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    main_page.click_abtest()# кликаем по ссылке
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.open_page(MainPage.url)
+    user.wait_sec(1)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(MainPageElms.LINK_ABTEST)
+    user.wait_sec(1)  # ждем 1500 миллисекунд = 1,5 секунды
 
     # объекты класса
     elms = ABTestPageElms()
@@ -30,9 +29,9 @@ def test_abtest_page_open(page: Page):
     '''
 
     # проверки
-    assert "/abtest" in page.url
-    assert header_locator.is_visible() # на странице заголовок (А/В Test) постоянный, а дальше могут добавляться окончания. сделал не строгую проверку, чтоб тест не падал
-    assert text_locator.is_visible()
+    assert "/abtest" in page.url, "Урл корректный"
+    assert header_locator.is_visible(), "Заголовок виден"
+    assert text_locator.is_visible(), "Текст виден"
 
     # Вывод результатов в консоль
     print(f"\n✅ Страница успешно загружена")

@@ -2,10 +2,9 @@
 
 import pytest
 from playwright.sync_api import Page, expect
-
+from base.user_client import User
 
 class BrokenImgsPageElms:
-
 
     PAGE_HEADER = "xpath=//h3[contains(text(), 'Broken Images')]"
     PAGE_IMAGES = "xpath=//img[contains(@src, '.jpg')]"
@@ -20,29 +19,33 @@ class BrokenImgsPageElms:
 
 
 class BrokenImgsPage:
-
-
+    url = "https://the-internet.herokuapp.com/broken_images"
+    '''
     # создаем функцию начальных значений (ссылка на браузер из теста и локаторы)
     def __init__(self, page: Page, elms: BrokenImgsPageElms):
         self.page = page
         self.elms = elms
+        self.user = User(page)
 
-    # создаем функции, имитация действий пользователя (Методы-действия)
     def go_to(self):
-        self.page.goto("https://the-internet.herokuapp.com/broken_images")
-        return self  # Возвращаем self, чтобы можно было делать цепочки (опционально)
+        self.user.open_page(self.url)
+        return self
+
+    def wait_for_load(self, sec: int = 2):
+        self.user.wait_sec(sec)
+        return self
 
     # Методы-проверки (возвращают True/False или ничего, просто ждут)
     def page_header_visible(self):
-        expect(self.elms.PAGE_HEADER).to_be_visible()
+        expect(self.page.locator(self.elms.PAGE_HEADER)).to_be_visible()
 
     # def page_images_visible(self):
         # expect(self.page_images).to_be_visible()
 
     def url_check(self):
-        expect(self.page).to_have_url("https://the-internet.herokuapp.com/broken_images")  # Проверяем урл
-        return self
+        expect(self.page).to_have_url(self.url)
 
     def images_count(self, expected_count: int):
-        expect(self.elms.PAGE_IMAGES).to_have_count(expected_count)
+        expect(self.page.locator(self.elms.PAGE_IMAGES)).to_have_count(expected_count)
         return self
+    '''

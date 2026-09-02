@@ -2,27 +2,22 @@
 
 import pytest, time
 from playwright.sync_api import Page
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
-from pages.chal_dom_page import ChalDomPage, ChalDomPageElms
+from pages.chal_dom_page import ChalDomPageElms
 
 def test_chal_dom_page_open(page: Page):
-    # Инициализируем классы
-    elms = MainPageElms()
-    main_page = MainPage(page, elms)
+    # Инициализируем класс
+    user = User(page)
+    # Действия
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
 
-    # Действия и проверки
-    main_page.go_to() # вызываем переход на страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-
-    main_page.click_chaldom()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(MainPageElms.LINK_CHALDOM)
+    user.wait_sec(1)
 
     elms = ChalDomPageElms()
-    chal_dom_page = ChalDomPage(page, elms)
-    '''
-    chal_dom_page.page_header_visible()# вызываем проверку видимости
-    chal_dom_page.url_check()  # вызываем проверку урла
-    '''
+
     # локаторы к переменные
     page_header = page.locator(elms.PAGE_HEADER)
     page_text = page.locator(elms.PAGE_TEXT)
@@ -47,7 +42,6 @@ def test_chal_dom_page_open(page: Page):
     href_edit = page.locator(elms.HREF_EDIT)
     href_delete = page.locator(elms.HREF_DELETE)
     page_canvas = page.locator(elms.PAGE_CANVAS)
-
 
     # проверки
     assert "/challenging_dom" in page.url

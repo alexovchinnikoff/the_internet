@@ -2,30 +2,24 @@
 
 import pytest, time
 from playwright.sync_api import Page, expect
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 from pages.broken_imgs_page import BrokenImgsPage, BrokenImgsPageElms
 
 def test_broken_imgs_page_open(page: Page):
     # Инициализируем
-    elms = MainPageElms()
-    main_page = MainPage(page, elms)
+    user = User(page)
+    # Действия
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
 
-    # Действия и проверки
-    main_page.go_to() # вызываем переход на страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-
-    main_page.click_brokenimgs()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(MainPageElms.LINK_BROKENIMGS)
+    user.wait_sec(1)
 
     elms = BrokenImgsPageElms()
-    broken_imgs_page = BrokenImgsPage(page, elms)
 
-    '''
-    broken_imgs_page.page_header_visible()# вызываем проверку видимости
-    # broken_imgs_page_object.page_images_visible() # картинки специально битые и тест упадет
-    broken_imgs_page.images_count(3)# вызываем проверку количества
-    broken_imgs_page.url_check()  # вызываем проверку урла
-    '''
+    user.click_element(elms.PAGE_IMAGES)# вызываем клик по элементу
+    user.wait_sec(1)
 
     # локаторы к переменные
     page_header = page.locator(elms.PAGE_HEADER)

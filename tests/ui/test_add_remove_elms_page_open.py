@@ -2,31 +2,22 @@
 
 import pytest, time
 from playwright.sync_api import Page
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 from pages.add_remove_page import AddRemovePage, AddRemovePageElms
 
 # Открывает страницу и ждет 3 секунды
 def test_add_remove_elms_page_open(page: Page):
-    # Инициализируем классы
-    elms = MainPageElms()
-    main_page = MainPage(page, elms)
+    # Инициализируем класс
+    user = User(page)
+    # Действия
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
 
-    # Действия и проверки
-    main_page.go_to() # вызываем переход на страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-
-    main_page.click_addremoveelms()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(MainPageElms.LINK_ADDREMOVEELMS)
+    user.wait_sec(1)
 
     elms = AddRemovePageElms()
-    add_remove_page = AddRemovePage(page, elms)
-
-    '''
-    add_remove_page.page_header_visible()# вызываем проверку видимости
-    add_remove_page.add_button_visible()# вызываем проверку видимости
-    add_remove_page.no_delete_buttons()
-    # add_remove_elms_page_object.click_add_element()
-    '''
 
     # локаторы к переменные
     page_header = page.locator(elms.PAGE_HEADER)

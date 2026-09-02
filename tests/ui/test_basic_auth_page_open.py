@@ -2,28 +2,24 @@
 
 import pytest, time
 from playwright.sync_api import Page
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 from pages.basic_auth_page import BasicAuthPage, BasicAuthPageElms
 
 def test_basic_auth_page_open(page: Page):
-    # Инициализируем классы
-    elms = MainPageElms()
-    main_page = MainPage(page, elms)
+    # Инициализируем класс
+    user = User(page)
 
-    # Действия и проверки
-    main_page.go_to()  # вызываем переход на страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    # Действия
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
+
+    user.click_element(MainPageElms.LINK_BASICAUTH)
+    user.wait_sec(1)
+
+    user.open_page(BasicAuthPage.url)
 
     elms = BasicAuthPageElms()
-    basic_auth_page = BasicAuthPage(page,elms)
-
-    basic_auth_page.go_to()# Открывает страницу по ссылке
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-
-    '''
-    basic_auth_page.header_and_text_visible()# вызываем проверку видимости
-    basic_auth_page.url_check()  # вызываем проверку урла
-    '''
 
     # локаторы к переменные
     page_header = page.locator(elms.PAGE_HEADER)

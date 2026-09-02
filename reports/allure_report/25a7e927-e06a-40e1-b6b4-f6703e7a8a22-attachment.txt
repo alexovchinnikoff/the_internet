@@ -1,0 +1,9 @@
+
+✅ Страница успешно загружена
+📍 Текущий URL: https://the-internet.herokuapp.com/challenging_dom
+📄 Виден заголовок страницы: Challenging DOM
+📄 Виден текст страницы: The hardest part in automated web testing is finding the best locators (e.g., ones that well named, unique, and unlikely to change). It's more often than not that the application you're testing was not built with this concept in mind. This example demonstrates that with unique IDs, a table with no helpful locators, and a canvas element.
+📄 Видны 3 ссылки стилизованные под кнопки
+📄 Видна 1  таблица с 1 шапкой и 10 рядами, 7 столбцами
+⏳ Ожидание 1,5 секунд...
+📸 Скриншот сохранен как 'open_challenging_dom_page_screenshot.png'

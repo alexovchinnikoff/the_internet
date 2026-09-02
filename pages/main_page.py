@@ -2,9 +2,11 @@
 
 import pytest
 from playwright.sync_api import Page, expect
+from base.user_client import User
 
 
 class MainPageElms:
+
     WELCOME_HEADER = "//h1[contains(text(), 'Welcome to the-internet')]"
     SECOND_HEADER = "//h2[contains(text(), 'Available Examples')]"
     LINKS = "//div[@id='content']/ul/li/a"
@@ -43,13 +45,17 @@ class MainPageElms:
 
 class MainPage:
 
+    url = "https://the-internet.herokuapp.com/"
 
+
+'''
     def __init__(self, page: Page, elms: MainPageElms):
         self.page = page # берем ссылку на страницу из теста
         self.elms = elms # берем ссылку на объект с локаторами
+        self.user = User(page)
 
     def go_to(self):
-        self.page.goto("https://the-internet.herokuapp.com/")
+        self.page.goto(self.url)
         return self
 
     def click_abtest(self):
@@ -75,7 +81,6 @@ class MainPage:
 
     # функции проверки (Методы-проверки - возвращают True/False или ничего, просто ждут)
     # Проверяем попадание на стартовую страницу
-    '''
     def url_check(self):
         expect(self.page).to_have_url("https://the-internet.herokuapp.com/")
 

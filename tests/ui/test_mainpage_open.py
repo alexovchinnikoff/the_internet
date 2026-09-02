@@ -2,21 +2,17 @@
 
 import pytest, time
 from playwright.sync_api import Page, expect
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 
 def test_main_page_open(page: Page):
-    elms = MainPageElms() # со скобками обращаемся к объекту, без скобок - просто к классу
-    main_page = MainPage(page,elms)
-    # Действия и проверки
-    main_page.go_to()  # переход на стартовую страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-    '''
-    main_page.url_check()  # проверяем урл
-    main_page.headers_visible() # проверяем заголовки
-    main_page.links_visible() # проверяем видимость ссылок
-    #main_page.links_enabled()# НЕ проверяем активность ссылок
-    main_page.links_count(44) # проверяем количество ссылок
-    '''
+    user = User(page)
+    # Действия
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
+
+    elms = MainPageElms()
+
     # локаторы к переменные
     welcome_header = page.locator(elms.WELCOME_HEADER)
     second_header = page.locator(elms.SECOND_HEADER)

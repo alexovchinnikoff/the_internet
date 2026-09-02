@@ -2,10 +2,9 @@
 
 import pytest
 from playwright.sync_api import Page, expect
-
+from base.user_client import User
 
 class ChalDomPageElms:
-
 
     PAGE_HEADER = "xpath=//div[@class='example']/h3[contains(text(), 'Challenging DOM')]"
     PAGE_TEXT = "xpath=//div[@class='example']/p[contains(text(), 'The hardest part in automated web testing')]"
@@ -71,23 +70,28 @@ class ChalDomPageElms:
         self.page_canvas = page.locator('xpath=//div//canvas[@width="599" and @height="200"]')
     '''
 
-
 class ChalDomPage:
+    url = "https://the-internet.herokuapp.com/challenging_dom"
 
-
+    '''
     def __init__(self, page: Page, elms: ChalDomPageElms):
         self.page = page
         self.elms = elms
+        self.user = User(page)
 
-    # создаем функции, имитация действий пользователя (Методы-действия)
     def go_to(self):
-        self.page.goto("https://the-internet.herokuapp.com/challenging_dom")
-        return self  # Возвращаем self, чтобы можно было делать цепочки (опционально)
+        self.user.open_page(self.url)
+        return self # Возвращаем self, чтобы можно было делать цепочки (опционально)
+
+    def wait_for_load(self, sec: int = 2):
+        self.user.wait_sec(sec)
+        return self
 
     # Методы-проверки (возвращают True/False или ничего, просто ждут)
     def page_header_visible(self):
-        expect(self.elms.PAGE_HEADER).to_be_visible()
+        expect(self.page.locator(self.elms.PAGE_HEADER)).to_be_visible()
 
     def url_check(self):
-        expect(self.page).to_have_url("https://the-internet.herokuapp.com/challenging_dom")  # Проверяем урл
+        expect(self.page).to_have_url(self.url)
         return self
+    '''

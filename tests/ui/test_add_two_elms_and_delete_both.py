@@ -2,43 +2,34 @@
 
 import pytest, time
 from playwright.sync_api import Page
+from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 from pages.add_remove_page import AddRemovePage, AddRemovePageElms
 
 # Открывает страницу
 def test_add_two_elms_and_delete_both(page: Page):
-    # Инициализируем классы
-    elms = MainPageElms()
-    main_page = MainPage(page, elms)
+    # Инициализируем класс
+    user = User(page)
+    # Действия
+    user.open_page(MainPage.url)
+    user.wait_sec(1)
 
-    # Действия и проверки
-    main_page.go_to() # вызываем переход на страницу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
-
-    main_page.click_addremoveelms()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(MainPageElms.LINK_ADDREMOVEELMS)
+    user.wait_sec(1)
 
     elms = AddRemovePageElms()
-    add_remove_page = AddRemovePage(page, elms)
 
-    add_remove_page.click_add_button()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(elms.ADD_BUTTON)
+    user.wait_sec(1)
 
-    add_remove_page.click_add_button()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(elms.ADD_BUTTON)
+    user.wait_sec(1)
 
-    add_remove_page.click_second_delete()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.click_element(elms.DELETE_SECOND)
+    user.wait_sec(1)
 
-    add_remove_page.click_first_delete()# вызываем клик по элементу
-    page.wait_for_timeout(1500)  # 1500 миллисекунд = 1,5 секунды
-
-    '''
-    add_remove_page.page_header_visible()# вызываем проверку видимости
-    add_remove_page.add_button_visible()# вызываем проверку видимости
-    add_remove_page.one_add_button()# вызываем проверку количества
-    add_remove_page.no_delete_buttons()# вызываем проверку количества
-    '''
+    user.click_element(elms.DELETE_FIRST)
+    user.wait_sec(1)
 
     # локаторы к переменные
     page_header = page.locator(elms.PAGE_HEADER)
