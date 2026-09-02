@@ -1,8 +1,0 @@
-﻿.pytest/
-venv/
-.idea/
-.pytest_cache/
-__pycache__/
-*.doc
-*.txt
-*.json  

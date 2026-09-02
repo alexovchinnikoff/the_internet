@@ -1,8 +1,0 @@
-
-✅ Страница успешно загружена
-📍 Текущий URL: https://the-internet.herokuapp.com/add_remove_elements/
-📄 Виден заголовок страницы: Add/Remove Elements
-📄 Видна кнопка Add Button в количестве: 1
-📄 Видна кнопка Delete в количестве: 1
-⏳ Ожидание 1,5 секунды...
-📸 Скриншот сохранен как 'add_elm_after_delete_one_screenshot.png'
