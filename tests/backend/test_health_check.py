@@ -8,6 +8,6 @@ def test_health_check():
     data = response.json()
     assert data["success"] is True
     assert data["status"] == 200
-    # assert data["message"] == "Successful Request"
+    assert data["message"] == "Successful Request" or data["message"] == "Notes API is Running"
     assert str(response.url).endswith("/health-check"), f"Неверный URL: {response.url}"
     print("✅ Тест health-check пройден успешно!")

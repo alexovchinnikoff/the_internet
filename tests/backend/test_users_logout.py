@@ -1,8 +1,8 @@
-# test_users_login.py
-from services import post_users_register, post_users_login
+#test_users_logout.py
+from services import post_users_register, post_users_login, delete_users_logout
 from helpers import get_userdata
 
-def test_login_user():
+def test_users_logout():
     user_data = get_userdata()
     print(f"👤 Тестируем пользователя: {user_data['email']}")
 
@@ -26,7 +26,12 @@ def test_login_user():
         )
     print(f"🔑 Токен получен")
 
-    assert login_resp.status_code == 200, f"Ожидался 200, но получен {login_resp.status_code}"
-    data = login_resp.json()
+    logout_resp = delete_users_logout(token=token)
+
+    assert logout_resp.status_code == 200, f"Ожидался статус 200, но получен {logout_resp.status_code}"
+    data = logout_resp.json()
     assert data["success"] is True
-    print("✅ Тест входа в аккаунт пройден успешно!")
+    assert data["status"] == 200
+    assert data["message"] == "Successful Request" or data["message"] == "User has been successfully logged out"
+    assert str(logout_resp.url).endswith("/users/logout"), f"Неверный URL: {logout_resp.url}"
+    print("🎉 Тест 'Logout' пройден успешно!")

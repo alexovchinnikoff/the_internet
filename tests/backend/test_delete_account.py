@@ -14,7 +14,21 @@ def test_delete_account():
         "email": user_data["email"],
         "password": user_data["password"]
     }
-    login_resp = post_users_login(login_payload)
-    assert login_resp.status_code == 200, f"Ожидался 200, но получен {login_resp.status_code}"
 
-    del_acc_resp = delete_users_account()
+    login_resp, token = post_users_login(login_payload)
+
+    assert login_resp.status_code == 200, f"Ошибка логина: {login_resp.text}"
+
+    if not token:
+        pytest.fail(
+            "Критическая ошибка: Не удалось извлечь токен из ответа логина! "
+            "Сервер требует токен в заголовке x-auth-token для логаута."
+        )
+    print(f"🔑 Токен получен")
+
+    del_acc_resp = delete_users_account(token=token)
+    assert del_acc_resp.status_code == 200, f"Ожидался статус 200, но получен {del_acc_resp.status_code}"
+    data = del_acc_resp.json()
+    assert data["success"] is True
+    assert data["status"] == 200
+    assert data["message"] == "Successful Request" or data["message"] == "Account successfully deleted"

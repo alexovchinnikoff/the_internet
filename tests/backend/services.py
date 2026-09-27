@@ -2,30 +2,42 @@
 import requests
 from endpoints import (
     URL,
-    ep_users_delete_account,
-    ep_users_register,
-    ep_users_logout,
-    ep_users_login,
-    ep_health_check
+    url_users_delete_account,
+    url_users_register,
+    url_users_logout,
+    url_users_login,
+    url_health_check
 )
 
+session = requests.Session()
+
 def post_users_register(payload: dict):
-    print(f"🚀 РЕГИСТРАЦИЯ: Отправляем на {ep_users_register}")
-    return requests.post(ep_users_register, json=payload)
+    print(f"🚀 РЕГИСТРАЦИЯ: Отправляем на {url_users_register}")
+    return requests.post(url_users_register, json=payload)
 
 def post_users_login(payload: dict):
-    print(f"🚀 ЛОГИН: Отправляем на {ep_users_login}")
-    return requests.post(ep_users_login, json=payload)
+    print(f"🚀 ЛОГИН: Отправляем на {url_users_login} и вынимаем из ответа токен")
+    response = session.post(url_users_login, json=payload)
+    data = response.json()
+    token = data.get("data", {}).get("token")
+    return response, token
 
 def get_health_check():
-    return requests.get(ep_health_check)
+    return requests.get(url_health_check)
 
-def delete_users_logout():
-    print(f"🚀 ЛОГАУТ: Отправляем на {ep_users_logout}")
-    return requests.delete(ep_users_logout)
+def delete_users_logout(token=None):
+    print(f"🚀 ЛОГAУТ: Отправляем на {url_users_logout} c токеном в заголовках")
+    headers = {}
+    if token:
+        headers["x-auth-token"] = token
+    return session.delete(url_users_logout, headers=headers)
 
-def delete_users_account():
-    return requests.delete(ep_users_delete_account)
+def delete_users_account(token=None):
+    print(f"🚀 УДАЛИТЬ АККАУНТ: Отправляем на {url_users_delete_account} c токеном в заголовках")
+    headers = {}
+    if token:
+        headers["x-auth-token"] = token
+    return requests.delete(url_users_delete_account, headers=headers)
 
 
 
