@@ -1,5 +1,4 @@
 # tests/ui/test_abtest_page_open.py
-
 from playwright.sync_api import Page
 from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
@@ -12,10 +11,10 @@ def test_abtest_page_open(page: Page):
 
     # Действия
     user.open_page(MainPage.url)
-    user.wait_sec(1)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.wait_sec(1)  # ждем
 
     user.click_element(MainPageElms.LINK_ABTEST)
-    user.wait_sec(1)  # ждем 1500 миллисекунд = 1,5 секунды
+    user.wait_sec(1)  #
 
     # объекты класса
     elms = ABTestPageElms()

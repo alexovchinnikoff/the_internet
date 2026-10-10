@@ -1,33 +1,31 @@
 # test_health_check_err500.py
-from unittest.mock import Mock
-from services import get_health_check
-import services
+import requests
+from unittest.mock import Mock, patch
+import api.services
 
-def test_health_check_err500():
-    fake_response = Mock()
-    fake_response.status_code = 500
-    fake_response.url = "https://practice.expandtesting.com/notes/api/health-check"
-    fake_response.json.return_value = {
+def create_fake_response(status_code, data):
+    fake_resp = Mock()
+    fake_resp.status_code = status_code
+    fake_resp.url = "https://practice.expandtesting.com/notes/api/health-check"
+    fake_resp.json.return_value = data
+    return fake_resp
+
+@patch('api.services.get_health_check')
+def test_health_check_err500(mock_get_health_check):
+    fake_data = {
         "success": False,
         "status": 500,
         "message": "Simulated Internal Error"
     }
+    fake_response = create_fake_response(500, fake_data)
+    mock_get_health_check.return_value = fake_response
 
-    original_func = services.get_health_check
-    try:
-        services.get_health_check = lambda: fake_response
-        response = services.get_health_check()
+    session = requests.Session()
 
-        assert response.status_code == 500, f"Ожидался 500, но получен {response.status_code}"
-        data = response.json()
-        assert data["success"] is False
-        assert data["status"] == 500
-        print("✅ Тест на симуляцию ошибки 500 пройден!")
+    response = api.services.get_health_check(session)
+    assert response.status_code == 500
 
-    finally:
-        services.get_health_check = original_func
-
-def test_health_check():
-    response = get_health_check()
-    assert response.status_code == 200
-    print("✅ Тест на реальный успех (200) пройден!")
+    data = response.json()
+    assert data["success"] is False
+    assert data["status"] == 500
+    print("✅ Тест на симуляцию ошибки 500 пройден!")

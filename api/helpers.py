@@ -1,5 +1,4 @@
 # helpers.py
-
 import time
 def get_userdata():
     timestamp = int(time.time() * 1000)

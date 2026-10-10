@@ -1,13 +1,15 @@
 # test_health_check.py
-from services import get_health_check
+import requests
+from api.services import get_health_check
 
 def test_health_check():
-    response = get_health_check()
+    session = requests.Session()
+    health_resp = get_health_check(session)
+    assert health_resp.status_code == 200, f"Ожидался 200, но получен {health_resp.status_code}"
 
-    assert response.status_code == 200, f"Ожидался 200, но получен {response.status_code}"
-    data = response.json()
-    assert data["success"] is True
-    assert data["status"] == 200
+    data = health_resp.json()
+    assert data["success"] is True, f"Ожидался success: True, но получено: {data['success']}"
+    assert data["status"] == 200, f"Ожидался статус 200 в JSON, но получено: {data['status']}"
     assert data["message"] == "Successful Request" or data["message"] == "Notes API is Running"
-    assert str(response.url).endswith("/health-check"), f"Неверный URL: {response.url}"
-    print("✅ Тест health-check пройден успешно!")
+    assert str(health_resp.url).endswith("/health-check"), f"Неверный URL: {health_resp.url}"
+    print("✅ Тест 'Проверка сервера' пройден успешно!")

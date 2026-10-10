@@ -1,8 +1,7 @@
 # user_client.py
-
-import pytest
 import allure
 from playwright.sync_api import Page
+
 
 class User:
 
@@ -12,11 +11,11 @@ class User:
 
     def open_page(self, url:str):
         with allure.step(f"Открываю страницу {url}"):
-            self.page.goto(url)
+            self.page.goto(url, timeout=60000)
 
     def click_element(self, element):
         with allure.step(f"Клик по элементу {element}"):
-            self.page.click(element)
+            self.page.click(element, timeout=60000)
 
     def wait_sec(self, sec:int):
         ms = sec * 1000

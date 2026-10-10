@@ -1,5 +1,4 @@
 # endpoints.py
-
 URL = "https://practice.expandtesting.com/notes/api"
 
 url_users_register = f"{URL}/users/register"
