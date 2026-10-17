@@ -1,52 +1,62 @@
-# pages/test_main_page_open.py
-
-import pytest, time
-from playwright.sync_api import Page, expect
+# tests/ui/test_main_page_open.py
+import pytest
+import allure
+from playwright.sync_api import Page
 from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 
+
+@allure.feature("Навигация и структура")
+@allure.story("Проверка главной страницы")
+@allure.title("Тест: Открытие и валидация главной страницы")
+@allure.description(
+    "Проверяет загрузку главной страницы, наличие ключевых заголовков, ссылок и соответствие количества элементов ожидаемому.")
+@allure.severity(allure.severity_level.CRITICAL)
 def test_main_page_open(page: Page):
     user = User(page)
-    # Действия
-    user.open_page(MainPage.url)
-    user.wait_sec(1)
-
     elms = MainPageElms()
+    base_url = MainPage.url
 
-    # локаторы к переменные
-    welcome_header = page.locator(elms.WELCOME_HEADER)
-    second_header = page.locator(elms.SECOND_HEADER)
-    links = page.locator(elms.LINKS)
-    link_abtest = page.locator(elms.LINK_ABTEST)
-    link_addremoveelms = page.locator(elms. LINK_ADDREMOVEELMS)
-    link_basicauth = page.locator(elms.LINK_BASICAUTH)
-    link_brokenimgs = page.locator(elms.LINK_BROKENIMGS)
-    link_chaldom = page.locator(elms.LINK_CHALDOM)
-    link_checkboxes = page.locator(elms.LINK_CHECKBOXES)
-    link_contextmenu = page.locator(elms.LINK_CONTEXTMENU)
+    with allure.step("1. Переход на главную страницу"):
+        user.open_page(MainPage.url)
 
-    # проверки
-    user.make_screenshot("check_main_page_open")
-    assert page.url == "https://the-internet.herokuapp.com/", "Урл корректный"
-    assert welcome_header.is_visible(), "Заголовок 1 виден"
-    assert second_header.is_visible(), "Заголовок 2 виден"
+    with allure.step("2. Проверка URL и основных заголовков"):
+        assert page.url == "https://the-internet.herokuapp.com/", f"Неверный URL страницы. Ожидался {base_url}, но получен {page.url}"
 
-    assert link_addremoveelms.is_visible(), "Ссылка видна"
-    assert link_basicauth.is_visible(), "Ссылка видна"
-    assert link_brokenimgs.is_visible(), "Ссылка видна"
-    assert link_chaldom.is_visible(), "Ссылка видна"
-    assert link_checkboxes.is_visible(), "Ссылка видна"
-    assert link_contextmenu.is_visible(), "Ссылка видна"
-    assert links.count() == 44, "Количество ссылок корректное"
+        welcome_header = page.locator(elms.WELCOME_HEADER)
+        second_header = page.locator(elms.SECOND_HEADER)
 
-    # Вывод результатов в консоль
-    print(f"\n✅ Стартовая страница успешно загружена")
-    print(f"📍 Текущий URL: {page.url}")
-    print(f"📄 Виден приветственный заголовок: {welcome_header.inner_text()}")
-    print(f"📄 Виден второй заголовок: {second_header.inner_text()}")
-    print(f"📄 В списке найдено {links.count()} ссылок (пунктов меню).")
-    print("⏳ Ожидание 1,5 секунды...")
+        assert welcome_header.is_visible(), "Приветственный заголовок не виден"
+        assert second_header.is_visible(), "Второй заголовок не виден"
 
-    # Скриншот
-    page.screenshot(path="D:/Projects/the_internet/prtscr/open_main_page_screenshot.png")
-    print("📸 Скриншот сохранен как 'open_main_page_screenshot.png'")
+    with allure.step("3. Валидация наличия ссылок и их количества"):
+        links = page.locator(elms.LINKS)
+
+        # Проверяем видимость конкретных важных ссылок
+        assert page.locator(elms.LINK_ABTEST).is_visible(), "Ссылка A/B Test не видна"
+        assert page.locator(elms.LINK_ADDREMOVEELMS).is_visible(), "Ссылка Add/Remove Elements не видна"
+        assert page.locator(elms.LINK_BASICAUTH).is_visible(), "Ссылка Basic Auth не видна"
+        assert page.locator(elms.LINK_BROKENIMGS).is_visible(), "Ссылка Broken Images не видна"
+        assert page.locator(elms.LINK_CHALDOM).is_visible(), "Ссылка Chaldom не видна"
+        assert page.locator(elms.LINK_CHECKBOXES).is_visible(), "Ссылка Checkboxes не видна"
+        assert page.locator(elms.LINK_CONTEXTMENU).is_visible(), "Ссылка Context Menu не видна"
+
+        # Проверка общего количества ссылок (согласно твоему тесту - 44)
+        assert links.count() == 44, f"Количество ссылок не соответствует ожидаемому (44). Найдено: {links.count()}"
+
+    with allure.step("4. Фиксация результата (Скриншот и детали)"):
+        screenshot_path = "D:/Projects/the_internet/prtscr/open_main_page_screenshot.png"
+        page.screenshot(path=screenshot_path)
+
+        # Прикрепляем скриншот к отчету Allure
+        allure.attach.file(screenshot_path, name="main_page_screenshot", attachment_type=allure.attachment_type.PNG)
+
+        # Прикрепляем текстовую информацию вместо print()
+        allure.attach(
+            f"URL: {page.url}\n"
+            f"Заголовок 1: {welcome_header.inner_text()}\n"
+            f"Заголовок 2: {second_header.inner_text()}\n"
+            f"Количество ссылок: {links.count()}",
+            name="Детали страницы",
+            attachment_type=allure.attachment_type.TEXT
+        )

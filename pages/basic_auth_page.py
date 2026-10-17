@@ -1,23 +1,11 @@
-# pages/abtest_page.py
-
-import pytest
+# pages/basic_auth_page.py
 from playwright.sync_api import Page, expect
 from base.user_client import User
 
+
 class BasicAuthPageElms:
-
-
     PAGE_HEADER = "xpath=//h3[contains(text(), 'Basic Auth')]"
     PAGE_TEXT = "xpath=//p[contains(text(), 'Congratulations!')]"
-
-
-    '''
-    def __init__(self, page: Page):
-        self.page_header = page.locator("xpath=.//h3[contains(text(), 'Basic Auth')]")
-        # self.page_header = page.locator("h3", has_text="Basic Auth")
-        self.page_text = page.locator("xpath=//p[contains(text(), 'Congratulations!')]")
-        # self.page_header = page.locator("p", has_text="Congratulations!)
-    '''
 
 
 class BasicAuthPage:

@@ -1,42 +1,55 @@
 # tests/ui/test_abtest_page_open.py
+import allure
 from playwright.sync_api import Page
 from base.user_client import User
 from pages.main_page import MainPage, MainPageElms
 from pages.abtest_page import ABTestPageElms
 
-# Открывает страницу
+
+@allure.feature("Навигация и переходы")
+@allure.story("Проверка перехода на страницу A/B теста")
+@allure.title("Тест: Открытие страницы A/B теста и валидация контента")
+@allure.description("Проверяет, что пользователь может перейти на страницу A/B теста, страница загружается корректно, и на ней присутствует ожидаемый контент.")
+@allure.severity(allure.severity_level.CRITICAL)
 def test_abtest_page_open(page: Page):
-    # объекты класса
+    # Инициализация объекта User
     user = User(page)
 
-    # Действия
-    user.open_page(MainPage.url)
-    user.wait_sec(1)  # ждем
+    with allure.step("1. Открытие главной страницы"):
+        user.open_page(MainPage.url)
 
-    user.click_element(MainPageElms.LINK_ABTEST)
-    user.wait_sec(1)  #
+    with allure.step("2. Переход на страницу A/B теста"):
+        user.click_element(MainPageElms.LINK_ABTEST)
+        # Небольшая пауза после клика, чтобы страница успела начать загрузку
+        user.wait_sec(1)
 
-    # объекты класса
-    elms = ABTestPageElms()
+    with allure.step("3. Локализация элементов на странице A/B теста"):
+        elms = ABTestPageElms()
+        header_locator = page.locator(elms.PAGE_HEADER)
+        text_locator = page.locator(elms.PAGE_TEXT)
 
-    # локаторы к переменные
-    header_locator = page.locator(elms.PAGE_HEADER)
-    text_locator = page.locator(elms.PAGE_TEXT)
+        # Явные проверки видимости (лучше, чем просто wait_sec)
+        assert header_locator.is_visible(), "Заголовок страницы не виден"
+        assert text_locator.is_visible(), "Текст на странице не виден"
 
-    # проверки
-    user.make_screenshot("abtest_page_open")
-    assert "/abtest" in page.url, "Урл корректный"
-    assert header_locator.is_visible(), "Заголовок виден"
-    assert text_locator.is_visible(), "Текст виден"
+    with allure.step("4. Валидация URL и контента"):
+        assert "/abtest" in page.url, "Неверный URL: страница не перешла на /abtest"
 
+        header_text = header_locator.inner_text()
+        text_text = text_locator.inner_text()
 
-    # Вывод результатов в консоль
-    print(f"\n✅ Страница успешно загружена")
-    print(f"📍 Текущий URL: {page.url }")
-    print(f"📄 Виден заголовок страницы: {header_locator.inner_text()}")
-    print(f"📄 Виден текст: {text_locator.inner_text()}")
-    print("⏳ Ожидание 1,5 секунды...")
+        assert header_text, "Заголовок страницы пустой"
+        assert text_text, "Текст страницы пустой"
 
-    # Скриншот
-    page.screenshot(path="D:/Projects/the_internet/prtscr/open_abtest_page_screenshot.png")
-    print("📸 Скриншот сохранен как 'open_abtest_page_screenshot.png'")
+    with allure.step("5. Фиксация результата (Скриншот)"):
+        screenshot_path = "D:/Projects/the_internet/prtscr/open_abtest_page_screenshot.png"
+        page.screenshot(path=screenshot_path)
+        allure.attach.file(screenshot_path, name="open_abtest_page_screenshot",
+                           attachment_type=allure.attachment_type.PNG)
+
+        # Вывод данных в отчет Allure (вместо print)
+        allure.attach(
+            f"URL: {page.url}\nHeader: {header_text}\nText: {text_text}",
+            name="Детали страницы",
+            attachment_type=allure.attachment_type.TEXT
+        )

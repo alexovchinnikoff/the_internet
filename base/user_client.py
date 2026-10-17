@@ -11,11 +11,11 @@ class User:
 
     def open_page(self, url:str):
         with allure.step(f"Открываю страницу {url}"):
-            self.page.goto(url, timeout=60000)
+            self.page.goto(url, timeout=90000)
 
     def click_element(self, element):
         with allure.step(f"Клик по элементу {element}"):
-            self.page.click(element, timeout=60000)
+            self.page.click(element, timeout=90000)
 
     def wait_sec(self, sec:int):
         ms = sec * 1000

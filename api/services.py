@@ -1,4 +1,4 @@
-# services.py
+# api/services.py
 import requests
 import allure
 from .endpoints import (
@@ -19,7 +19,6 @@ def get_session(user_data: dict):
     response = session.post(url_users_login, json=login_payload)
     data = response.json()
     token = data.get("data", {}).get("token")
-    print(f"🔑 get_session(): Логин успешен, токен получен: {token}")
     return session, token
 
 @allure.step("Регистрируем пользователя")
@@ -39,10 +38,14 @@ def get_health_check(session: requests.Session):
 
 @allure.step("Логаут пользователя")
 def delete_users_logout(session: requests.Session, token=None):
-    headers = {"x-auth-token": token}
+    headers = {}
+    if token:
+        headers["x-auth-token"] = token
     return session.delete(url_users_logout, headers=headers)
 
 @allure.step("Удалить пользователя")
 def delete_users_account(session: requests.Session, token=None):
-    headers = {"x-auth-token": token}
+    headers = {}
+    if token:
+        headers["x-auth-token"] = token
     return session.delete(url_users_delete_account, headers=headers)
