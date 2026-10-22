@@ -142,20 +142,41 @@ def get_notes(session: requests.Session, token: str):
     return response, data
 
 @allure.step("Получить информацию о заметке по ID")
-def get_notes_id(session: requests.Session):
-    return session.get(url_notes)
-
-@allure.step("Создать заметку c названием, описанием, категорией и ID пользователя")
-def put_notes(session: requests.Session, payload: dict):
-    return session.post(url_notes, json=payload)
-
-@allure.step("Изменить атрибут в заметке")
-def patch_notes(session: requests.Session, payload: dict):
-    return session.post(url_notes, json=payload)
-
-@allure.step("Удалить заметку")
-def delete_notes(session: requests.Session, token=None):
+def get_notes_id(session: requests.Session, note_id: str, token: str):
+    url = f"{url_notes}/{note_id}"
     headers = {}
     if token:
         headers["x-auth-token"] = token
-    return session.delete(url_notes_id, headers=headers)
+    response = session.get(url, headers=headers)
+    data = response.json()
+    return response, data
+
+@allure.step("Изменить заметку c названием, описанием, категорией и ID пользователя")
+def put_notes_id(session: requests.Session, note_id: str, payload: dict, token: str = None):
+    url = f"{url_notes}/{note_id}"
+    headers = {}
+    if token:
+        headers["x-auth-token"] = token
+    response = session.put(url, json=payload, headers=headers)
+    data = response.json()
+    return response, data
+
+@allure.step("Изменить атрибут в заметке")
+def patch_notes_id(session: requests.Session, note_id: str, payload: dict, token: str = None):
+        url = f"{url_notes}/{note_id}"
+        headers = {}
+        if token:
+            headers["x-auth-token"] = token
+        response = session.patch(url, json=payload, headers=headers)
+        data = response.json()
+        return response, data
+
+@allure.step("Удалить заметку")
+def delete_notes_id(session: requests.Session, note_id: str, token: str = None):
+        url = f"{url_notes}/{note_id}"
+        headers = {}
+        if token:
+            headers["x-auth-token"] = token
+        response = session.delete(url, headers=headers)
+        data = response.json()
+        return response, data

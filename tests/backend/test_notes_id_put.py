@@ -1,0 +1,38 @@
+# tests/backend/test_notes_id_put.py
+import requests
+import allure
+from api.services import post_users_register, post_users_login, post_notes, get_notes, put_notes_id
+from api.helpers import get_userdata
+
+@allure.feature("Update a note")
+@allure.story("Обновить заметку")
+@allure.title("Тест: Успешное изменение заметки")
+@allure.severity(allure.severity_level.CRITICAL)
+def test_notes_id_put():
+    session = requests.Session()
+    user_data = get_userdata()
+
+    with allure.step("1. Регистрация"):
+        resp = post_users_register(session, user_data)
+        assert resp.status_code == 201 and resp.json().get("success")
+
+    with allure.step("2. Логин"):
+        resp, token = post_users_login(session, {"email": user_data["email"], "password": user_data["password"]})
+        assert resp.status_code == 200 and token
+
+    with allure.step("3. Создание заметки"):
+        payload = {"title": "Test Home", "description": "Desc", "category": "Home"}
+        resp, data = post_notes(session, payload, token=token)
+        assert resp.status_code in [200, 201] and data.get("success")
+        note_id = data["data"]["id"]
+
+    with allure.step("4. Обновление заметки"):
+        upd_payload = {"title": "Updated Work", "description": "New desc", "category": "Work", "completed": True}
+        resp, data = put_notes_id(session, note_id=note_id, payload=upd_payload, token=token)
+        assert resp.status_code in [200, 201] and data.get("success")
+        assert data["data"]["title"] == "Updated Work" and data["data"]["category"] == "Work"
+
+    with allure.step("5. Проверка списка"):
+        resp, data = get_notes(session, token=token)
+        assert resp.status_code == 200 and data.get("success")
+        assert any(n["id"] == note_id for n in data["data"])

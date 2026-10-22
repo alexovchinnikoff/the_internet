@@ -4,6 +4,7 @@ import allure
 from api.services import post_users_register, delete_users_logout
 from api.helpers import get_userdata
 
+
 @allure.feature("Авторизация и сессия")
 @allure.story("Обработка ошибок авторизации")
 @allure.title("Тест: Логаут без токена (ошибка 401)")
@@ -16,7 +17,8 @@ def test_logout_without_token():
     with allure.step("1. Регистрация нового пользователя"):
         reg_resp = post_users_register(session, user_data)
         assert reg_resp.status_code == 201, \
-            f"Ожидался статус 201 (Created), но получен {reg_resp.status_code}. Ответ: {reg_resp.text}"
+            (f"Ожидался статус 201 (Created), но получен {reg_resp.status_code}. "
+             f"Ответ: {reg_resp.text}")
         data_reg = reg_resp.json()
         assert data_reg.get("success") is True, \
             f"Ожидался success: True, но получено: {data_reg.get('success')}"
@@ -26,7 +28,8 @@ def test_logout_without_token():
         # Мы намеренно вызываем функцию без токена, чтобы проверить защиту сервера.
         logout_resp = delete_users_logout(session, token=None)
         assert logout_resp.status_code == 401, \
-            f"Ожидался статус 401 (Unauthorized), но получен {logout_resp.status_code}. Ответ: {logout_resp.text}"
+            (f"Ожидался статус 401 (Unauthorized), но получен {logout_resp.status_code}. "
+             f"Ответ: {logout_resp.text}")
 
     with allure.step("3. Валидация ответа об ошибке"):
         data = logout_resp.json()

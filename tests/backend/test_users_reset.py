@@ -10,6 +10,7 @@ from api.services import (
 )
 from api.helpers import get_userdata
 
+
 @allure.feature("Восстановление доступа")
 @allure.story("Сброс пароля")
 @allure.title("Тест: Сброс пароля (Mock Token - Проверка защиты)")
@@ -30,7 +31,10 @@ def test_users_reset():
         assert reg_resp.json().get("success") is True
 
     with allure.step("2. Логин (Старый пароль)"):
-        login_payload = {"email": target_email, "password": old_password}
+        login_payload = {
+            "email": target_email,
+            "password": old_password
+        }
         login_resp, token = post_users_login(session, login_payload)
         assert login_resp.status_code == 200
         assert token is not None
@@ -45,7 +49,8 @@ def test_users_reset():
         reset_resp, reset_data = post_users_reset(session, token=mock_token, new_password=new_password)
 
         # Сервер ДОЛЖЕН отвергнуть фейковый токен. Если тут 200 — значит, API не проверяет токены (баг).
-        assert reset_resp.status_code != 200, f"Ожидался отказ (400/401), но сервер принял фейковый токен! Статус: {reset_resp.status_code}"
+        assert reset_resp.status_code != 200, \
+            f"Ожидался отказ (400/401), но сервер принял фейковый токен! Статус: {reset_resp.status_code}"
 
         # Дополнительно: убедимся, что сервер честно сказал, что токен неверен
         if reset_data:
@@ -53,13 +58,19 @@ def test_users_reset():
 
     with allure.step("5. Проверка: Старый пароль всё ещё работает"):
         # Так как сброс не прошел, старый пароль должен работать
-        good_login_payload = {"email": target_email, "password": old_password}
+        good_login_payload = {
+            "email": target_email,
+            "password": old_password
+        }
         good_login_resp, _ = post_users_login(session, good_login_payload)
         assert good_login_resp.status_code == 200
 
     with allure.step("6. Проверка: Новый пароль НЕ работает"):
         # Так как сброс не прошел, новый пароль не должен работать
-        bad_login_payload = {"email": target_email, "password": new_password}
+        bad_login_payload = {
+            "email": target_email,
+            "password": new_password
+        }
         bad_login_resp, _ = post_users_login(session, bad_login_payload)
         assert bad_login_resp.status_code != 200
 

@@ -4,47 +4,38 @@ import allure
 from api.services import get_users_profile, post_users_register, post_users_login
 from api.helpers import get_userdata
 
+
 @allure.feature("Returns the profile information for the logged-in current user")
 @allure.story("Получить информацию из профиля пользователя")
 @allure.title("Тест: Успешное получение информации из профиля пользователя")
 @allure.description("Проверяет, что эндпоинт /users/profile доступен, возвращает статус 200 и корректные данные.")
 @allure.severity(allure.severity_level.BLOCKER)  # Критически важный тест
-
 def test_users_profile():
     session = requests.Session()
     user_data = get_userdata()
 
-    with allure.step("1. Регистрация нового пользователя"):
-        reg_resp = post_users_register(session, user_data)
-        assert reg_resp.status_code == 201, \
-            f"Ожидался статус 201 (Created), но получен {reg_resp.status_code}. Ответ: {reg_resp.text}"
+    with allure.step("1. Регистрация"):
+        resp = post_users_register(session, user_data)
+        assert resp.status_code == 201 and resp.json().get("success")
 
-        data_reg = reg_resp.json()
-        assert data_reg.get("success") is True, \
-            f"Ожидался success: True, но получено: {data_reg.get('success')}"
-
-    with allure.step("2. Логин пользователя и получение токена"):
-        login_payload = {
-            "email": user_data["email"],
-            "password": user_data["password"]
-        }
-
-        login_resp, token = post_users_login(session, login_payload)
-        assert login_resp.status_code == 200, \
-            f"Ожидался статус 200 (OK), но получен {login_resp.status_code}. Ответ: {login_resp.text}"
-        assert token is not None, "Критическая ошибка: Не удалось извлечь токен из ответа сервера!"
+    with allure.step("2. Логин"):
+        resp, token = post_users_login(session, {"email": user_data["email"], "password": user_data["password"]})
+        assert resp.status_code == 200 and token
 
     with allure.step("Шаг 3: Запрос профиля пользователя с токеном"):
         profile_resp = get_users_profile(session, token=token)
-        assert profile_resp.status_code == 200, f"Ожидался 200, но получен {profile_resp.status_code}"
+        assert profile_resp.status_code == 200, \
+            f"Ожидался 200, но получен {profile_resp.status_code}"
 
     with allure.step("4. Проверяем структуру ответа JSON"):
         data_profile = profile_resp.json()
-        assert data_profile.get("success") is True, f"Ожидался success: True, но получено: {data_profile.get('success')}"
-        assert data_profile.get("status") == 200, f"Ожидался статус 200 в JSON, но получено: {data_profile.get('status')}"
-
+        assert data_profile.get("success") is True, \
+            f"Ожидался success: True, но получено: {data_profile.get('success')}"
+        assert data_profile.get("status") == 200, \
+            f"Ожидался статус 200 в JSON, но получено: {data_profile.get('status')}"
         message = data_profile.get("message", "")
-        assert "successful" in message or "Successful" in message, f"Некорректное сообщение: {message}"
+        assert "successful" in message or "Successful" in message, \
+            f"Некорректное сообщение: {message}"
 
     with allure.step("5. Валидация данных пользователя в ответе сервера"):
         data_server = data_profile.get("data")

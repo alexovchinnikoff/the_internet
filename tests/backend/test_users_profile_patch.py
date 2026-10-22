@@ -4,35 +4,23 @@ import allure
 from api.services import get_users_profile, post_users_register, post_users_login, patch_users_profile
 from api.helpers import get_userdata
 
+
 @allure.feature("Update the user profile information for the logged-in user")
 @allure.story("Изменить информацию в профиля пользователя")
 @allure.title("Тест: Успешное изменение и получение информации из профиля пользователя")
 @allure.description("Проверяет полный цикл: регистрация -> логин -> получение токена -> изменение имени и добавление телефона и компании -> Получение обновленных даных из профиля. Валидирует статус, структуру JSON и корректность токена.")
 @allure.severity(allure.severity_level.BLOCKER)  # Критически важный тест
-
 def test_users_profile():
     session = requests.Session()
     user_data = get_userdata()
 
-    with allure.step("1. Регистрация нового пользователя"):
-        reg_resp = post_users_register(session, user_data)
-        assert reg_resp.status_code == 201, \
-            f"Ожидался статус 201 (Created), но получен {reg_resp.status_code}. Ответ: {reg_resp.text}"
+    with allure.step("1. Регистрация"):
+        resp = post_users_register(session, user_data)
+        assert resp.status_code == 201 and resp.json().get("success")
 
-        data_reg = reg_resp.json()
-        assert data_reg.get("success") is True, \
-            f"Ожидался success: True, но получено: {data_reg.get('success')}"
-
-    with allure.step("2. Логин пользователя и получение токена"):
-        login_payload = {
-            "email": user_data["email"],
-            "password": user_data["password"]
-        }
-
-        login_resp, token = post_users_login(session, login_payload)
-        assert login_resp.status_code == 200, \
-            f"Ожидался статус 200 (OK), но получен {login_resp.status_code}. Ответ: {login_resp.text}"
-        assert token is not None, "Критическая ошибка: Не удалось извлечь токен из ответа сервера!"
+    with allure.step("2. Логин"):
+        resp, token = post_users_login(session, {"email": user_data["email"], "password": user_data["password"]})
+        assert resp.status_code == 200 and token
 
     new_name = "Updated Name for Test"
     new_phone = "9998887766"

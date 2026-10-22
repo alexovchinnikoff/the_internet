@@ -4,40 +4,29 @@ import allure
 from api.services import post_users_register, post_users_login, delete_users_logout, post_users_forgot
 from api.helpers import get_userdata
 
+
 @allure.feature("Sends a password reset link to the user's email address, allowing them to reset their password")
 @allure.story("Сброс пароля")
 @allure.title("Тест: Ссылка на сброс пароля отправляется на почту")
 @allure.description("Проверяет полный цикл: регистрация -> логин -> получение токена -> успешный логаут-> отправка ссылки на сброс пароля на почту. Валидирует статус, структуру JSON и корректность токена.")
 @allure.severity(allure.severity_level.CRITICAL)
-
 def test_users_forgot():
     session = requests.Session()
     user_data = get_userdata()
 
-    with allure.step("1. Регистрация нового пользователя"):
-        reg_resp = post_users_register(session, user_data)
-        assert reg_resp.status_code == 201, \
-            f"Ожидался статус 201 (Created), но получен {reg_resp.status_code}. Ответ: {reg_resp.text}"
+    with allure.step("1. Регистрация"):
+        resp = post_users_register(session, user_data)
+        assert resp.status_code == 201 and resp.json().get("success")
 
-        data_reg = reg_resp.json()
-        assert data_reg.get("success") is True, \
-            f"Ожидался success: True, но получено: {data_reg.get('success')}"
-
-    with allure.step("2. Логин пользователя и получение токена"):
-        login_payload = {
-            "email": user_data["email"],
-            "password": user_data["password"]
-        }
-
-        login_resp, token = post_users_login(session, login_payload)
-        assert login_resp.status_code == 200, \
-            f"Ожидался статус 200 (OK), но получен {login_resp.status_code}. Ответ: {login_resp.text}"
-        assert token is not None, "Критическая ошибка: Не удалось извлечь токен из ответа сервера!"
+    with allure.step("2. Логин"):
+        resp, token = post_users_login(session, {"email": user_data["email"], "password": user_data["password"]})
+        assert resp.status_code == 200 and token
 
     with allure.step("3. Выполнение логаута с передачей токена"):
         logout_resp = delete_users_logout(session, token=token)
         assert logout_resp.status_code == 200, \
-            f"Ожидался статус 200 (OK), но получен {logout_resp.status_code}. Ответ: {logout_resp.text}"
+            (f"Ожидался статус 200 (OK), но получен {logout_resp.status_code}. "
+             f"Ответ: {logout_resp.text}")
 
     with allure.step("4. Валидация ответа сервера на логаут"):
         data = logout_resp.json()
@@ -61,9 +50,12 @@ def test_users_forgot():
 
     with allure.step(f"Отправка запроса на сброс пароля для {target_email}"):
         resp, email_received = post_users_forgot(session, email=target_email)
-        assert resp.status_code == 200, f"Ожидался 200, но получен {resp.status_code}"
+        assert resp.status_code == 200, \
+            f"Ожидался 200, но получен {resp.status_code}"
 
         data = resp.json()
-        assert data.get("success") is True, f"Ожидался success: True, но получено: {data.get('success')}"
+        assert data.get("success") is True, \
+            f"Ожидался success: True, но получено: {data.get('success')}"
 
-        assert email_received == target_email, f"Email не совпадает! Ожидался {target_email}, получен {email_received}"
+        assert email_received == target_email, \
+            f"Email не совпадает! Ожидался {target_email}, получен {email_received}"
